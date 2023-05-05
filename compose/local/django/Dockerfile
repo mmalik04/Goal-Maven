@@ -25,7 +25,6 @@ RUN python -m venv /py && \
         --no-create-home \
         django-user && \
     chown -R django-user:django-user /Goal-Maven
-    #chown -R django-user:django-user /py/lib
 
 ENV PATH="/py/bin:$PATH"
 
