@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  goal_maven:
+    build:
+      context: .
+      args:
+        - DEV=true
+      dockerfile: ./compose/local/django/Dockerfile
+    image: goal_maven_local_django
+    container_name: goal_maven_local_django
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./goal_maven:/goal_maven
+      - ./config:/config
+      - ./manage.py:/Goal-Maven/manage.py
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
