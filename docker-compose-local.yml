@@ -18,3 +18,22 @@ services:
       - ./setup.cfg:/Goal-Maven/setup.cfg
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=localdb
+      - DB_USER=localuser
+      - DB_PASS=changeme
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - goal_maven_local_postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=localdb
+      - POSTGRES_USER=localuser
+      - POSTGRES_PASSWORD=changeme
+
+volumes:
+  goal_maven_local_postgres_data:
