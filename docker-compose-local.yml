@@ -15,5 +15,6 @@ services:
       - ./goal_maven:/goal_maven
       - ./config:/config
       - ./manage.py:/Goal-Maven/manage.py
+      - ./setup.cfg:/Goal-Maven/setup.cfg
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"

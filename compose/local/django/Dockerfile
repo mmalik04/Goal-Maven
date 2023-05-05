@@ -7,6 +7,7 @@ COPY ./requirements /tmp/requirements
 COPY ./goal_maven /Goal-Maven/goal_maven
 COPY ./config /Goal-Maven/config
 COPY ./manage.py /Goal-Maven/manage.py
+COPY ./setup.cfg /Goal-Maven/setup.cfg
 WORKDIR /Goal-Maven
 EXPOSE 8000
 
