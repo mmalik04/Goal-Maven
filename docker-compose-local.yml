@@ -12,12 +12,14 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./goal_maven:/goal_maven
-      - ./config:/config
+      - ./goal_maven:/Goal-Maven/goal_maven
+      - ./config/:/Goal-Maven/config/
       - ./manage.py:/Goal-Maven/manage.py
       - ./setup.cfg:/Goal-Maven/setup.cfg
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py wait_for_db &&
+            python manage.py migrate &&
+            python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_HOST=db
       - DB_NAME=localdb
