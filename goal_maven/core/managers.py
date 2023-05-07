@@ -15,13 +15,24 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """Create, save and return a new user."""
         if not email:
-            raise ValueError('User must have an email address.')
+            raise ValueError(_('User must have an email address.'))
+
+        date_of_birth = extra_fields.get('date_of_birth')
+        first_name = extra_fields.get('first_name')
+        last_name = extra_fields.get('last_name')
+        if not first_name:
+            raise ValueError(_('User must have a First Name.'))
+
+        if not last_name:
+            raise ValueError(_('User must have a Last Name.'))
+
         date_of_birth = extra_fields.get('date_of_birth')
         if date_of_birth:
             try:
                 self.validate_date_of_birth(date_of_birth)
             except ValidationError as e:
-                raise ValidationError(_('Invalid date of birth')) from e
+                raise ValidationError(e)
+
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -39,9 +50,11 @@ class UserManager(BaseUserManager):
 
     def validate_date_of_birth(self, date_of_birth):
         """Validate date_of_birth is not in the future or less than 5 years old."""
-        date_of_birth_str = datetime.strptime(date_of_birth, '%Y-%m-%d')
+        date_of_birth_str = datetime.strptime(str(date_of_birth), '%Y-%m-%d')
         if date_of_birth_str > datetime.now():
-            raise ValidationError(_('Date of birth cannot be in the future.'))
+            raise ValidationError(_(
+                'Date of birth cannot be in the future.'
+            ))
         if date_of_birth_str > datetime.now() - timedelta(days=1825):
             raise ValidationError(_(
                 'You have be 5 years or older to use this api.'

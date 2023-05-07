@@ -1,0 +1,2 @@
+# Sample command to create app
+docker-compose -f docker-compose-local.yml run --rm goal_maven sh -c "python manage.py startapp user goal_maven/user"
