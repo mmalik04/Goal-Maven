@@ -37,6 +37,22 @@ class ModelTests(TestCase):
         with self.assertRaises(ValueError):
             get_user_model().objects.create_user('', 'test123')
 
+    def test_new_user_with_correct_name_created(self):
+        """Test user's first and last name is created correctly."""
+        email = 'test@example.com'
+        password = 'testpass123'
+        first_name = 'test'
+        last_name = 'user'
+        user = get_user_model().objects.create_user(
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+        self.assertEqual(user.first_name, first_name)
+        self.assertEqual(user.last_name, last_name)
+
     def test_create_superuser(self):
         """Test creating a superuser."""
         user = get_user_model().objects.create_superuser(
