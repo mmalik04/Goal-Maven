@@ -150,6 +150,8 @@ class PrivateUserApiTests(TestCase):
             username='testuser123',
             date_of_birth='1996-01-05',
             country='Pakistan',
+            favorite_team='Real Madrid',
+            favorite_players='Cristiano Ronaldo',
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
@@ -166,6 +168,8 @@ class PrivateUserApiTests(TestCase):
             'username': self.user.username,
             'date_of_birth': self.user.date_of_birth,
             'country': self.user.country,
+            'favorite_team': self.user.favorite_team,
+            'favorite_players': self.user.favorite_players,
         })
 
     def test_post_me_not_allowed(self):
@@ -174,12 +178,15 @@ class PrivateUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_update_user_profile(self):
+    def test_update_user_profile_success(self):
         """Test updating the user profile for the authenticated user."""
         payload = {
             'password': 'newpassword123',
             'first_name': 'updatedtest',
             'last_name': 'updateduser',
+            'country': 'England',
+            'favorite_team': 'Barcelona',
+            'favorite_players': 'Crisiano Ronaldo, Lionel Messi, Luka Modric',
         }
 
         res = self.client.patch(ME_URL, payload)
@@ -187,5 +194,8 @@ class PrivateUserApiTests(TestCase):
         self.user.refresh_from_db()
         self.assertEqual(self.user.first_name, payload['first_name'])
         self.assertEqual(self.user.last_name, payload['last_name'])
+        self.assertEqual(self.user.country, payload['country'])
+        self.assertEqual(self.user.favorite_team, payload['favorite_team'])
+        self.assertEqual(self.user.favorite_players, payload['favorite_players'])
         self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)

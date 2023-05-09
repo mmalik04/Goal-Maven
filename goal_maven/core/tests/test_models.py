@@ -146,7 +146,7 @@ class ModelTests(TestCase):
             )
 
     def test_new_user_with_favourite_team_created(self):
-        """Test user's username is created correctly."""
+        """Test user's favourite Team is created correctly."""
         email = 'test@example.com'
         password = 'testpass123'
         first_name = 'test'
@@ -195,6 +195,50 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(user.country, country)
+
+    def test_update_user_details_is_successful(self):
+        """Test updating user's details is successful."""
+        email = 'test@example.com'
+        password = 'testpass123'
+        first_name = 'test'
+        last_name = 'user'
+        country = 'Pakistan'
+        date_of_birth = '1997-01-05'
+        favorite_team = 'Bayern Munich'
+        favorite_players = 'Karim Benzema'
+        user = get_user_model().objects.create_user(
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+        updated_password = 'updatedtestpass123'
+        updated_first_name = 'updated_test'
+        updated_last_name = 'updated_user'
+        extra_fields = {
+            'first_name': updated_first_name,
+            'last_name': updated_last_name,
+            'country': country,
+            'date_of_birth': date_of_birth,
+            'favorite_team': favorite_team,
+            'favorite_players': favorite_players,
+        }
+
+        updated_user = get_user_model().objects.update_user(
+            user=user,
+            password=updated_password,
+            **extra_fields,
+        )
+
+        self.assertEqual(updated_user.email, email)
+        self.assertEqual(updated_user.first_name, updated_first_name)
+        self.assertEqual(updated_user.last_name, updated_last_name)
+        self.assertEqual(updated_user.country, country)
+        self.assertEqual(updated_user.date_of_birth, date_of_birth)
+        self.assertEqual(updated_user.favorite_team, favorite_team)
+        self.assertEqual(updated_user.favorite_players, favorite_players)
+        self.assertTrue(updated_user.check_password(updated_password))
 
     def test_create_superuser(self):
         """Test creating a superuser."""

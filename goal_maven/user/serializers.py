@@ -17,7 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = [
             'email', 'password', 'first_name', 'last_name',
-            'username', 'date_of_birth', 'country',
+            'username', 'date_of_birth', 'country', 'favorite_team',
+            'favorite_players',
         ]
         extra_kwargs = {
             'password': {
