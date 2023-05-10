@@ -11,12 +11,13 @@ from goal_maven.core import models
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users."""
     ordering = ['id']
-    list_display = ['email', 'first_name', 'last_name', 'username',
-                    'date_of_birth', 'country']
+    list_display = ['email', 'first_name', 'last_name',
+                    'date_of_birth']
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (_('Details'), {'fields': ('email', 'password')}),
         (_('Personal Info'), {'fields': (
-            'first_name', 'last_name', 'username', 'date_of_birth', 'country',
+            'first_name', 'last_name', 'username', 'date_of_birth',
+            'country', 'groups',
         )}),
         (
             _('Permissions'),
@@ -50,10 +51,14 @@ class UserAdmin(BaseUserAdmin):
 
 class ContinentAdmin(admin.ModelAdmin):
     """Define the admin pages for Continents."""
+
+    def has_permission(self, request):
+        return request.user.is_active and request.user.is_staff
+
     ordering = ['continent_id']
     list_display = ['continent_name']
     fieldsets = (
-        (_('Details'), {'fields': ('continent_name',)}),
+        (_('Details'), {'fields': ('continent_name', 'created_by')}),
     )
     readonly_fields = []
 
@@ -83,7 +88,7 @@ class StadiumAdmin(admin.ModelAdmin):
     ordering = ['stadium_id']
     list_display = ['stadium_name', 'capacity', 'city']
     fieldsets = (
-        (_('Details'), {'fields': ('stadium_name', 'capacity', 'city', 'nation')}),
+        (_('Details'), {'fields': ('stadium_name', 'capacity', 'city',)}),
     )
     readonly_fields = []
 
@@ -197,12 +202,12 @@ class FixtureAdmin(admin.ModelAdmin):
     """Define the admin pages for Fixtures."""
     ordering = ['fixture_id']
     list_display = ['match_day', 'home_team', 'away_team', 'time', 'date',
-                    'status']
+                    'match_status']
     fieldsets = (
         (_('Details'), {'fields': (
             'season', 'league', 'match_day', 'home_team', 'away_team',
             'home_team_manager', 'away_team_manager', 'stadium', 'date',
-            'time', 'referee', 'status',
+            'time', 'referee', 'match_status',
         )}),
     )
     readonly_fields = []
@@ -214,8 +219,8 @@ class MatchAdmin(admin.ModelAdmin):
     list_display = ['fixture', 'result', 'winner_team']
     fieldsets = (
         (_('Details'), {'fields': (
-            'fixture', 'date', 'time', 'stadium', 'attendance', 'referee', 'season',
-            'league', 'result', 'winner_team', 'extra_time', 'injury_time',
+            'fixture', 'attendance',
+            'result', 'winner_team', 'extra_time', 'injury_time',
             'home_team_goals', 'away_team_goals', 'home_team_possession',
             'away_team_possession', 'home_team_shots', 'away_team_shots',
             'home_team_shots_on_target', 'away_team_shots_on_target',
@@ -233,7 +238,7 @@ class MatchAdmin(admin.ModelAdmin):
 class MatchEventAdmin(admin.ModelAdmin):
     """Define the admin pages for MatchEvents."""
     ordering = ['event_id']
-    list_display = ['event_type', 'match', 'player', 'minute']
+    list_display = ['event_type', 'player', 'minute', 'match']
     fieldsets = (
         (_('Details'), {'fields': (
             'event_type', 'match', 'player', 'minute', 'second',
@@ -263,6 +268,16 @@ class PitchLocationAdmin(admin.ModelAdmin):
     readonly_fields = []
 
 
+class MatchStatusAdmin(admin.ModelAdmin):
+    """Define the admin pages for PitchLocations."""
+    ordering = ['match_status_id']
+    list_display = ['status_name']
+    fieldsets = (
+        (_('Details'), {'fields': ('status_name',)}),
+    )
+    readonly_fields = []
+
+
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Continent, ContinentAdmin)
 admin.site.register(models.Nation, NationAdmin)
@@ -281,3 +296,4 @@ admin.site.register(models.Match, MatchAdmin)
 admin.site.register(models.MatchEvent, MatchEventAdmin)
 admin.site.register(models.EventType, EventTypeAdmin)
 admin.site.register(models.PitchLocation, PitchLocationAdmin)
+admin.site.register(models.MatchStatus, MatchStatusAdmin)

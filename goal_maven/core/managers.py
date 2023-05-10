@@ -7,6 +7,8 @@ from datetime import timedelta
 from django.contrib.auth.models import BaseUserManager
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+# from django.contrib.auth import get_user_model
+from django.db import models
 
 
 class UserManager(BaseUserManager):
@@ -37,7 +39,8 @@ class UserManager(BaseUserManager):
         """Update and return an existing user."""
         self.validate_fields(user.email, **extra_fields)
         if 'email' in extra_fields:
-            raise ValueError(_('Email cannot be updated.'))
+            user.email = extra_fields['email']
+            # raise ValueError(_('Email cannot be updated.'))
         if 'password' in extra_fields:
             user.set_password(extra_fields['password'])
         if 'first_name' in extra_fields:
@@ -87,3 +90,13 @@ class UserManager(BaseUserManager):
             raise ValidationError(_(
                 'You have be 5 years or older to use this api.'
             ))
+
+
+class SuperuserOnlyManager(models.Manager):
+    """Common manager to ensure only staff can create an object."""
+    # if not user.is_superuser:
+    #     raise ValueError("Permission Denied")
+    def create(self, user, *args, **kwargs):
+        if user.is_staff:
+            return super().create(*args, **kwargs)
+        raise ValueError("Permission Denied")

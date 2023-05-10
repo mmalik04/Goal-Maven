@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
 )
-from goal_maven.core.managers import UserManager
+from goal_maven.core.managers import UserManager, SuperuserOnlyManager
 from django.utils.translation import gettext_lazy as _
 
 
@@ -15,12 +15,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('Email Address'), max_length=255, unique=True)
     first_name = models.CharField(_('First Name'), max_length=50, blank=False)
     last_name = models.CharField(_('Last Name'), max_length=50, blank=False)
-    username = models.CharField(_('Username'), max_length=50, blank=True)
-    date_of_birth = models.DateField(_('Date of birth'), null=True, blank=True)
+    username = models.CharField(
+        _('Username'), max_length=50, null=True, blank=True,
+    )
+    date_of_birth = models.DateField(
+        _('Date of birth'), null=True, blank=True,
+    )
     date_joined = models.DateTimeField(auto_now_add=True)
-    country = models.CharField(_('Country'), max_length=255, blank=True)
-    favorite_team = models.CharField(_('Favorite Team'), max_length=255, blank=True)
-    favorite_players = models.TextField(_('Favorite Players'), blank=True)
+    country = models.CharField(
+        _('Country'), max_length=255, blank=True,
+    )
+    favorite_team = models.CharField(
+        _('Favorite Team'), max_length=255, null=True, blank=True,
+    )
+    favorite_players = models.TextField(
+        _('Favorite Players'), null=True, blank=True,
+    )
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -33,7 +43,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Continent(models.Model):
     continent_id = models.AutoField(primary_key=True)
-    continent_name = models.CharField(max_length=50, blank=False)
+    continent_name = models.CharField(max_length=50, blank=False, unique=True)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.continent_name
@@ -41,8 +53,10 @@ class Continent(models.Model):
 
 class Nation(models.Model):
     nation_id = models.AutoField(primary_key=True)
-    nation_name = models.CharField(max_length=50, blank=False)
+    nation_name = models.CharField(max_length=50, blank=False, unique=True)
     continent = models.ForeignKey('Continent', on_delete=models.CASCADE, blank=False)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.nation_name
@@ -53,16 +67,20 @@ class City(models.Model):
     city_name = models.CharField(max_length=50, blank=False)
     nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
 
+    objects = SuperuserOnlyManager()
+
     def __str__(self):
         return self.city_name
 
 
 class Stadium(models.Model):
     stadium_id = models.AutoField(primary_key=True)
-    stadium_name = models.CharField(max_length=50, blank=False)
+    stadium_name = models.CharField(max_length=50, blank=False, unique=True)
     city = models.ForeignKey('City', on_delete=models.CASCADE, blank=False)
-    nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
+    # nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
     capacity = models.IntegerField(default=0)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.stadium_name
@@ -70,13 +88,16 @@ class Stadium(models.Model):
 
 class Team(models.Model):
     team_id = models.AutoField(primary_key=True)
-    team_name = models.CharField(max_length=50, blank=False)
+    team_name = models.CharField(max_length=50, blank=False, unique=True)
     est_date = models.DateField(blank=False)
     league = models.ForeignKey('League', on_delete=models.CASCADE, blank=False)
     stadium = models.ForeignKey('Stadium', on_delete=models.CASCADE, blank=False)
-    manager = models.ForeignKey(
-        'Manager', on_delete=models.CASCADE, blank=False, related_name='team_manager'
+    manager = models.OneToOneField(
+        'Manager', on_delete=models.SET_NULL, null=True, related_name='team_manager',
+        unique=True,
     )
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.team_name
@@ -86,13 +107,15 @@ class Manager(models.Model):
     manager_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    team = models.ForeignKey(
+    team = models.OneToOneField(
         'Team', on_delete=models.SET_NULL, null=True, blank=True,
-        related_name='manager_of_team',
+        related_name='manager_of_team', unique=True,
     )
     date_of_birth = models.DateField(blank=False)
     nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
     career_start = models.DateField(blank=False)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -102,14 +125,19 @@ class Player(models.Model):
     player_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    jersy_number = models.SmallIntegerField(default=0, blank=True)
+    jersy_number = models.CharField(max_length=50, null=True, blank=True)
     date_of_birth = models.DateField(blank=False)
+    career_start = models.DateField(blank=False)
     nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
     height = models.FloatField(default=0)
     weight = models.FloatField(default=0)
     role = models.ForeignKey('PlayerRole', on_delete=models.CASCADE, blank=False)
     total_appearances = models.IntegerField(default=0)
-    team = models.ForeignKey('Team', on_delete=models.CASCADE, blank=True)
+    team = models.ForeignKey(
+        'Team', on_delete=models.CASCADE, null=True, blank=True,
+    )
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -117,7 +145,9 @@ class Player(models.Model):
 
 class PlayerRole(models.Model):
     role_id = models.AutoField(primary_key=True)
-    role_name = models.CharField(max_length=50, blank=False)
+    role_name = models.CharField(max_length=50, blank=False, unique=True)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.role_name
@@ -135,13 +165,15 @@ class Referee(models.Model):
     penalty_decisions_overturned = models.IntegerField(default=0)
     other_decisions_overturned = models.IntegerField(default=0)
 
+    objects = SuperuserOnlyManager()
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 
 class Season(models.Model):
     season_id = models.AutoField(primary_key=True)
-    season_name = models.CharField(max_length=50, blank=False)
+    season_name = models.CharField(max_length=50, blank=False, unique=True)
     start_date = models.DateField(blank=False)
     end_date = models.DateField(blank=False)
     is_concluded = models.BooleanField(default=False)
@@ -149,6 +181,8 @@ class Season(models.Model):
     number_of_matches = models.IntegerField(default=0)
     goals_scored = models.IntegerField(default=0)
     avg_goals_per_match = models.FloatField(default=0)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.season_name
@@ -162,18 +196,24 @@ class League(models.Model):
     total_teams = models.SmallIntegerField(default=0)
     match_day = models.SmallIntegerField(default=0)
     top_scorer = models.ForeignKey(
-        'Player', on_delete=models.CASCADE, blank=True, related_name='top_scorer'
+        'Player', on_delete=models.CASCADE, null=True, blank=True,
+        related_name='top_scorer',
     )
     most_assists = models.ForeignKey(
-        'Player', on_delete=models.CASCADE, blank=True, related_name='most_assists'
+        'Player', on_delete=models.CASCADE, null=True, blank=True,
+        related_name='most_assists',
     )
     is_concluded = models.BooleanField(default=False)
     champion_team = models.ForeignKey(
-        'Team', on_delete=models.CASCADE, blank=True, related_name='champion_team'
+        'Team', on_delete=models.CASCADE, null=True, blank=True,
+        related_name='champion_team',
     )
     runner_up_team = models.ForeignKey(
-        'Team', on_delete=models.CASCADE, blank=True, related_name='runner_up_team'
+        'Team', on_delete=models.CASCADE, null=True, blank=True,
+        related_name='runner_up_team',
     )
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.league_name
@@ -185,7 +225,7 @@ class LeagueTable(models.Model):
     season = models.ForeignKey('Season', on_delete=models.CASCADE, blank=False)
     team = models.ForeignKey('Team', on_delete=models.CASCADE, blank=False)
     points = models.SmallIntegerField(default=0)
-    position = models.SmallIntegerField(blank=True)
+    position = models.SmallIntegerField(null=True, blank=True)
     matches_played = models.SmallIntegerField(default=0)
     matches_won = models.SmallIntegerField(default=0)
     matches_drawn = models.SmallIntegerField(default=0)
@@ -193,6 +233,8 @@ class LeagueTable(models.Model):
     goals_scored = models.IntegerField(default=0)
     goals_against = models.IntegerField(default=0)
     goal_difference = models.SmallIntegerField(default=0)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return f"Team: {self.team}\nPosition: {self.position}\nPoints: {self.points}"
@@ -209,17 +251,15 @@ class Fixture(models.Model):
     away_team = models.ForeignKey(
         'Team', on_delete=models.CASCADE, blank=False, related_name='away_team'
     )
-    home_team_manager = models.ForeignKey(
-        'Manager', on_delete=models.CASCADE, blank=False, related_name='home_manager'
-    )
-    away_team_manager = models.ForeignKey(
-        'Manager', on_delete=models.CASCADE, blank=False, related_name='away_manager'
-    )
+    home_team_manager = models.CharField(max_length=50, blank=False)
+    away_team_manager = models.CharField(max_length=50, blank=False)
     stadium = models.ForeignKey('Stadium', on_delete=models.CASCADE, blank=False)
     date = models.DateField(blank=False)
     time = models.TimeField(blank=False)
     referee = models.ForeignKey('Referee', on_delete=models.CASCADE, blank=False)
-    status = models.CharField(max_length=50, blank=False)
+    match_status = models.ForeignKey('MatchStatus', on_delete=models.CASCADE, blank=False)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return f"{self.home_team} vs {self.away_team}"
@@ -228,15 +268,11 @@ class Fixture(models.Model):
 class Match(models.Model):
     match_id = models.AutoField(primary_key=True)
     fixture = models.ForeignKey('Fixture', on_delete=models.CASCADE, blank=False)
-    date = models.DateField(blank=False)
-    time = models.TimeField(blank=False)
-    stadium = models.ForeignKey('Stadium', on_delete=models.CASCADE, blank=False)
     attendance = models.IntegerField(default=0)
-    referee = models.ForeignKey('Referee', on_delete=models.CASCADE, blank=False)
-    season = models.ForeignKey('Season', on_delete=models.CASCADE, blank=False)
-    league = models.ForeignKey('League', on_delete=models.CASCADE, blank=False)
     result = models.BooleanField(default=False)
-    winner_team = models.ForeignKey('Team', on_delete=models.CASCADE, blank=True)
+    winner_team = models.ForeignKey(
+        'Team', on_delete=models.CASCADE, null=True, blank=True,
+    )
     extra_time = models.BooleanField(default=False)
     injury_time = models.SmallIntegerField(default=0)
     home_team_goals = models.SmallIntegerField(default=0)
@@ -264,8 +300,10 @@ class Match(models.Model):
     home_team_red_cards = models.SmallIntegerField(default=0)
     away_team_red_cards = models.SmallIntegerField(default=0)
 
+    objects = SuperuserOnlyManager()
+
     def __str__(self):
-        return f"{self.winner_team}"
+        return f"{self.fixture}"
 
 
 class MatchEvent(models.Model):
@@ -273,17 +311,20 @@ class MatchEvent(models.Model):
     event_type = models.ForeignKey('EventType', on_delete=models.CASCADE, blank=False)
     match = models.ForeignKey('Match', on_delete=models.CASCADE, blank=False)
     player = models.ForeignKey(
-        'Player', on_delete=models.CASCADE, blank=False, related_name='player'
+        'Player', on_delete=models.CASCADE, blank=False, related_name='player',
     )
     minute = models.SmallIntegerField(default=0)
     second = models.SmallIntegerField(default=0)
     is_extra_time = models.BooleanField(default=False)
     pitch_area = models.ForeignKey(
-        'PitchLocation', on_delete=models.CASCADE, blank=False
+        'PitchLocation', on_delete=models.CASCADE, null=True, blank=True,
     )
     associated_player = models.ForeignKey(
-        'Player', on_delete=models.CASCADE, blank=False, related_name='associated_player'
+        'Player', on_delete=models.CASCADE, null=True, blank=True,
+        related_name='associated_player',
     )
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return f"{self.player} {self.event_type}"
@@ -291,7 +332,9 @@ class MatchEvent(models.Model):
 
 class EventType(models.Model):
     event_type_id = models.AutoField(primary_key=True)
-    event_name = models.CharField(max_length=50, blank=False)
+    event_name = models.CharField(max_length=50, blank=False, unique=True)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.event_name
@@ -299,7 +342,19 @@ class EventType(models.Model):
 
 class PitchLocation(models.Model):
     pitch_area_id = models.AutoField(primary_key=True)
-    pitch_area_name = models.CharField(max_length=50, blank=False)
+    pitch_area_name = models.CharField(max_length=50, blank=False, unique=True)
+
+    objects = SuperuserOnlyManager()
 
     def __str__(self):
         return self.pitch_area_name
+
+
+class MatchStatus(models.Model):
+    match_status_id = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=50, blank=False, unique=True)
+
+    objects = SuperuserOnlyManager()
+
+    def __str__(self):
+        return self.status_name

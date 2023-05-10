@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Docker: Python",
+            "type": "python",
+            "request": "attach",
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/Goal-Maven"
+                }
+            ],
+            "port": 8000,
+            "host": "localhost",
+            "preLaunchTask": "docker: run"
+
+        }
+    ]
+}

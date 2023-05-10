@@ -7,10 +7,42 @@ from datetime import timedelta
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
+from django.test import Client
+
+from goal_maven.core import models
+from goal_maven.core.tests.helper_methods import HelperMethods
 
 
 class ModelTests(TestCase):
     """Test models."""
+
+    def setUp(self):
+        """Create admin user for test."""
+        self.staff_client = Client()
+
+        email = 'testadmin@example.com'
+        password = 'testpass123'
+        first_name = 'test'
+        last_name = 'admin'
+        self.staff_user = get_user_model().objects.create_user(
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            is_staff=True
+        )
+        self.staff_client.force_login(self.staff_user)
+        self.user_client = Client()
+        self.user = get_user_model().objects.create_user(
+            email='user@example.com',
+            password='testpass123',
+            first_name='test',
+            last_name='User',
+        )
+        self.user_client.force_login(self.user)
+
+        self.helper = HelperMethods()
 
     def test_create_user_with_email_successful(self):
         """Test creating a user with an email is successful."""
@@ -251,3 +283,174 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_continent_successful(self):
+        """Test creating a continent with staff user is successful."""
+        name = 'Asia'
+        continent = self.helper.create_continent(name)
+
+        self.assertEqual(models.Continent.objects.count(), 1)
+        self.assertEqual(continent.continent_name, name)
+
+    def test_create_continent_already_exists_error(self):
+        """Test creating a continent which is already there raises error."""
+        name = 'Australia'
+        self.helper.create_continent(name)
+        with self.assertRaises(IntegrityError):
+            self.helper.create_continent(name)
+        self.assertEqual(models.Continent.objects.count(), 1)
+
+    def test_create_nation_successful(self):
+        """Test creating a nation with staff user is successful."""
+        name = 'Spain'
+        nation = self.helper.create_nation(name)
+
+        self.assertEqual(models.Nation.objects.count(), 1)
+        self.assertEqual(nation.nation_name, name)
+
+    def test_create_nation_already_exists_error(self):
+        """Test creating a nation which is already there raises error."""
+        name = 'Spain'
+        self.helper.create_nation(name)
+        with self.assertRaises(IntegrityError):
+            self.helper.create_nation(name)
+        self.assertEqual(models.Nation.objects.count(), 1)
+
+    def test_create_stadium_successful(self):
+        """Test creating a stadium with staff user is successful."""
+        name = 'bernabeu'
+        stadium = self.helper.create_stadium(name)
+
+        self.assertEqual(models.Stadium.objects.count(), 1)
+        self.assertEqual(stadium.stadium_name, name)
+
+    def test_create_manager_successful(self):
+        """Test creating a manager with staff user is successful."""
+        first_name = 'Junaid'
+        last_name = 'Malik'
+        manager = self.helper.create_manager(
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+        self.assertEqual(models.Manager.objects.count(), 1)
+        self.assertEqual(manager.first_name, first_name)
+        self.assertEqual(manager.last_name, last_name)
+
+    def test_create_referee_successful(self):
+        """Test creating a referee with staff user is successful."""
+        first_name = 'Junaid'
+        last_name = 'Malik'
+        referee = self.helper.create_referee(
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+        self.assertEqual(models.Referee.objects.count(), 1)
+        self.assertEqual(referee.first_name, first_name)
+        self.assertEqual(referee.last_name, last_name)
+
+    def test_create_playerrole_successful(self):
+        """Test creating a player role with staff user is successful."""
+        name = 'Striker'
+        playerrole = self.helper.create_playerrole(name)
+
+        self.assertEqual(models.PlayerRole.objects.count(), 1)
+        self.assertEqual(playerrole.role_name, name)
+
+    def test_create_player_successful(self):
+        """Test creating a player with staff user is successful."""
+        first_name = 'Junaid'
+        last_name = 'Malik'
+        player = self.helper.create_player(
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+        self.assertEqual(models.Player.objects.count(), 1)
+        self.assertEqual(player.first_name, first_name)
+        self.assertEqual(player.last_name, last_name)
+
+    def test_create_season_successful(self):
+        """Test creating a season with staff user is successful."""
+        name = '22-23'
+        season = self.helper.create_season(name)
+
+        self.assertEqual(models.Season.objects.count(), 1)
+        self.assertEqual(season.season_name, name)
+
+    def test_create_league_successful(self):
+        """Test creating a league with staff user is successful."""
+        name = 'LaLiga Santander'
+        league = self.helper.create_league(name)
+
+        self.assertEqual(models.League.objects.count(), 1)
+        self.assertEqual(league.league_name, name)
+
+    def test_create_team_successful(self):
+        """Test creating a team with staff user is successful."""
+        name = 'Real Madrid'
+        team = self.helper.create_team(name)
+
+        self.assertEqual(models.Team.objects.count(), 1)
+        self.assertEqual(team.team_name, name)
+
+    def test_create_leaguetable_successful(self):
+        """Test creating a league table entry with staff user is successful."""
+        name = 'Real Madrid'
+        points = 90
+        position = 1
+        leaguetable = self.helper.create_leaguetable(
+            team_name=name,
+            points=points,
+            position=position,
+        )
+
+        self.assertEqual(models.LeagueTable.objects.count(), 1)
+        self.assertEqual(leaguetable.team.team_name, name)
+
+    def test_create_fixture_successful(self):
+        """Test creating a fixture with staff user is successful."""
+        home_team = 'Real Madrid'
+        away_team = 'Barcelona'
+        fixture = self.helper.create_fixture(
+            home_team=home_team,
+            away_team=away_team,
+        )
+
+        self.assertEqual(models.Fixture.objects.count(), 1)
+        self.assertEqual(fixture.home_team.team_name, home_team)
+        self.assertEqual(fixture.away_team.team_name, away_team)
+
+    def test_create_match_successful(self):
+        """Test creating a match with staff user is successful."""
+        home_team = 'Real Madrid'
+        away_team = 'Barcelona'
+        fixture = self.helper.create_fixture(
+            home_team=home_team,
+            away_team=away_team,
+        )
+
+        match = self.helper.create_match(fixture=fixture)
+
+        self.assertEqual(models.Match.objects.count(), 1)
+        self.assertEqual(match.fixture.home_team.team_name, home_team)
+        self.assertEqual(match.fixture.away_team.team_name, away_team)
+
+    # def test_create_matchevent_successful(self):
+    #     """Test creating a match event with staff user is successful."""
+    #     home_team = 'Real Madrid'
+    #     away_team = 'Barcelona'
+    #     match = self.helper.create_match(
+    #         home_team=home_team,
+    #         away_team=away_team,
+    #     )
+
+    #     matchevent = self.helper.create_matchevent(
+
+    #         match=match,
+    #     )
+
+    #     self.assertEqual(models.MatchEvent.objects.count(), 1)
+    #     self.assertEqual(matchevent, home_team)
+    #     self.assertEqual(fixture.away_team.team_name, away_team)
