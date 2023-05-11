@@ -105,8 +105,7 @@ class Team(models.Model):
 
 class Manager(models.Model):
     manager_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=50, blank=False)
-    last_name = models.CharField(max_length=50, blank=False)
+    manager_name = models.CharField(max_length=50, blank=False)
     team = models.OneToOneField(
         'Team', on_delete=models.SET_NULL, null=True, blank=True,
         related_name='manager_of_team', unique=True,
@@ -118,13 +117,12 @@ class Manager(models.Model):
     objects = SuperuserOnlyManager()
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.manager_name
 
 
 class Player(models.Model):
     player_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=50, blank=False)
-    last_name = models.CharField(max_length=50, blank=False)
+    player_name = models.CharField(max_length=50, blank=False)
     jersy_number = models.CharField(max_length=50, null=True, blank=True)
     date_of_birth = models.DateField(blank=False)
     career_start = models.DateField(blank=False)
@@ -140,7 +138,7 @@ class Player(models.Model):
     objects = SuperuserOnlyManager()
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.player_name
 
 
 class PlayerRole(models.Model):
@@ -155,8 +153,7 @@ class PlayerRole(models.Model):
 
 class Referee(models.Model):
     referee_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=50, blank=False)
-    last_name = models.CharField(max_length=50, blank=False)
+    referee_name = models.CharField(max_length=50, blank=False)
     nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
     career_start = models.DateField(blank=False)
     matches_officiated = models.SmallIntegerField(default=0)
@@ -168,7 +165,7 @@ class Referee(models.Model):
     objects = SuperuserOnlyManager()
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.referee_name
 
 
 class Season(models.Model):

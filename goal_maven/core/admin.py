@@ -11,8 +11,7 @@ from goal_maven.core import models
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users."""
     ordering = ['id']
-    list_display = ['email', 'first_name', 'last_name',
-                    'date_of_birth']
+    list_display = ['email', 'first_name', 'last_name', 'date_of_birth']
     fieldsets = (
         (_('Details'), {'fields': ('email', 'password')}),
         (_('Personal Info'), {'fields': (
@@ -58,7 +57,7 @@ class ContinentAdmin(admin.ModelAdmin):
     ordering = ['continent_id']
     list_display = ['continent_name']
     fieldsets = (
-        (_('Details'), {'fields': ('continent_name', 'created_by')}),
+        (_('Details'), {'fields': ('continent_name',)}),
     )
     readonly_fields = []
 
@@ -108,10 +107,10 @@ class TeamAdmin(admin.ModelAdmin):
 class ManagerAdmin(admin.ModelAdmin):
     """Define the admin pages for Managers."""
     ordering = ['manager_id']
-    list_display = ['first_name', 'last_name', 'team', 'career_start']
+    list_display = ['manager_name', 'team', 'career_start']
     fieldsets = (
         (_('Details'), {'fields': (
-            'first_name', 'last_name', 'team', 'date_of_birth', 'nation',
+            'manager_name', 'team', 'date_of_birth', 'nation',
             'career_start',
         )}),
     )
@@ -121,10 +120,10 @@ class ManagerAdmin(admin.ModelAdmin):
 class PlayerAdmin(admin.ModelAdmin):
     """Define the admin pages for Players."""
     ordering = ['player_id']
-    list_display = ['first_name', 'last_name', 'team', 'jersy_number']
+    list_display = ['player_name', 'team', 'jersy_number']
     fieldsets = (
         (_('Details'), {'fields': (
-            'first_name', 'last_name', 'jersy_number', 'team', 'date_of_birth',
+            'player_name', 'jersy_number', 'team', 'date_of_birth',
             'nation', 'height', 'weight', 'role', 'total_appearances',
         )}),
     )
@@ -144,10 +143,10 @@ class PlayerRoleAdmin(admin.ModelAdmin):
 class RefereeAdmin(admin.ModelAdmin):
     """Define the admin pages for Referees."""
     ordering = ['referee_id']
-    list_display = ['first_name', 'last_name', 'nation', 'matches_officiated']
+    list_display = ['referee_name', 'nation', 'matches_officiated']
     fieldsets = (
         (_('Details'), {'fields': (
-            'first_name', 'last_name', 'nation', 'career_start', 'matches_officiated',
+            'referee_name', 'nation', 'career_start', 'matches_officiated',
             'yellow_cards_issued', 'red_cards_issued', 'penalty_decisions_overturned',
             'other_decisions_overturned',
         )}),

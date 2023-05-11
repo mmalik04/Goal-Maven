@@ -326,29 +326,23 @@ class ModelTests(TestCase):
 
     def test_create_manager_successful(self):
         """Test creating a manager with staff user is successful."""
-        first_name = 'Junaid'
-        last_name = 'Malik'
+        name = 'Junaid'
         manager = self.helper.create_manager(
-            first_name=first_name,
-            last_name=last_name,
+            manager_name=name,
         )
 
         self.assertEqual(models.Manager.objects.count(), 1)
-        self.assertEqual(manager.first_name, first_name)
-        self.assertEqual(manager.last_name, last_name)
+        self.assertEqual(manager.manager_name, name)
 
     def test_create_referee_successful(self):
         """Test creating a referee with staff user is successful."""
-        first_name = 'Junaid'
-        last_name = 'Malik'
+        referee_name = 'Junaid'
         referee = self.helper.create_referee(
-            first_name=first_name,
-            last_name=last_name,
+            referee_name=referee_name,
         )
 
         self.assertEqual(models.Referee.objects.count(), 1)
-        self.assertEqual(referee.first_name, first_name)
-        self.assertEqual(referee.last_name, last_name)
+        self.assertEqual(referee.referee_name, referee_name)
 
     def test_create_playerrole_successful(self):
         """Test creating a player role with staff user is successful."""
@@ -360,16 +354,13 @@ class ModelTests(TestCase):
 
     def test_create_player_successful(self):
         """Test creating a player with staff user is successful."""
-        first_name = 'Junaid'
-        last_name = 'Malik'
+        player_name = 'Junaid Malik'
         player = self.helper.create_player(
-            first_name=first_name,
-            last_name=last_name,
+            player_name=player_name,
         )
 
         self.assertEqual(models.Player.objects.count(), 1)
-        self.assertEqual(player.first_name, first_name)
-        self.assertEqual(player.last_name, last_name)
+        self.assertEqual(player.player_name, player_name)
 
     def test_create_season_successful(self):
         """Test creating a season with staff user is successful."""
@@ -409,6 +400,16 @@ class ModelTests(TestCase):
         self.assertEqual(models.LeagueTable.objects.count(), 1)
         self.assertEqual(leaguetable.team.team_name, name)
 
+    def test_create_matchstatus_successful(self):
+        """Test creating a match status with staff user is successful."""
+        status = 'Scheduled'
+        match_status = self.helper.create_matchstatus(
+            status_name=status,
+        )
+
+        self.assertEqual(models.MatchStatus.objects.count(), 1)
+        self.assertEqual(match_status.status_name, status)
+
     def test_create_fixture_successful(self):
         """Test creating a fixture with staff user is successful."""
         home_team = 'Real Madrid'
@@ -437,20 +438,45 @@ class ModelTests(TestCase):
         self.assertEqual(match.fixture.home_team.team_name, home_team)
         self.assertEqual(match.fixture.away_team.team_name, away_team)
 
-    # def test_create_matchevent_successful(self):
-    #     """Test creating a match event with staff user is successful."""
-    #     home_team = 'Real Madrid'
-    #     away_team = 'Barcelona'
-    #     match = self.helper.create_match(
-    #         home_team=home_team,
-    #         away_team=away_team,
-    #     )
+    def test_create_eventtype_successful(self):
+        """Test creating an event type with staff user is successful."""
+        name = 'Goal'
+        event_type = self.helper.create_eventtype(
+            event_name=name,
+        )
 
-    #     matchevent = self.helper.create_matchevent(
+        self.assertEqual(models.EventType.objects.count(), 1)
+        self.assertEqual(event_type.event_name, name)
 
-    #         match=match,
-    #     )
+    def test_create_pitchposition_successful(self):
+        """Test creating a pitchposition with staff user is successful."""
+        name = 'Right channel'
+        pitch_area = self.helper.create_pitchposition(
+            pitch_area_name=name,
+        )
 
-    #     self.assertEqual(models.MatchEvent.objects.count(), 1)
-    #     self.assertEqual(matchevent, home_team)
-    #     self.assertEqual(fixture.away_team.team_name, away_team)
+        self.assertEqual(models.PitchLocation.objects.count(), 1)
+        self.assertEqual(pitch_area.pitch_area_name, name)
+
+    def test_create_matchevent_successful(self):
+        """Test creating a match event with staff user is successful."""
+        event_name = 'Foul'
+        player = 'David Alaba'
+        associated_player = 'Robert Lewandowski'
+        minute = 59
+        second = 20
+
+        match_event = self.helper.create_matchevent(
+            event_name=event_name,
+            player=player,
+            associated_player=associated_player,
+            minute=minute,
+            second=second,
+        )
+
+        self.assertEqual(models.MatchEvent.objects.count(), 1)
+        self.assertEqual(match_event.event_type.event_name, event_name)
+        self.assertEqual(match_event.player.player_name, player)
+        self.assertEqual(
+            match_event.associated_player.player_name, associated_player
+        )

@@ -9,6 +9,7 @@ from django.db import transaction
 
 # import pdb
 # import inspect
+# import os
 
 
 class HelperMethods:
@@ -70,7 +71,7 @@ class HelperMethods:
                 user=self.staff_user,
             )
 
-    def create_manager(self, first_name='test', last_name='manager', team=None):
+    def create_manager(self, manager_name='test manager', team=None):
         """Method to create a manager."""
         with transaction.atomic():
             if models.Nation.objects.count() > 0:
@@ -78,8 +79,7 @@ class HelperMethods:
             else:
                 nation = self.create_nation()
             return models.Manager.objects.create(
-                first_name=first_name,
-                last_name=last_name,
+                manager_name=manager_name,
                 date_of_birth='1970-01-01',
                 nation=nation,
                 team=team,
@@ -87,7 +87,7 @@ class HelperMethods:
                 user=self.staff_user,
             )
 
-    def create_referee(self, first_name='test', last_name='referee'):
+    def create_referee(self, referee_name='test referee'):
         """Method to create a referee."""
         with transaction.atomic():
             if models.Nation.objects.count() > 0:
@@ -95,8 +95,7 @@ class HelperMethods:
             else:
                 nation = self.create_nation()
             return models.Referee.objects.create(
-                first_name=first_name,
-                last_name=last_name,
+                referee_name=referee_name,
                 nation=nation,
                 career_start='1995-01-01',
                 user=self.staff_user,
@@ -110,7 +109,7 @@ class HelperMethods:
                 user=self.staff_user,
             )
 
-    def create_player(self, first_name='test', last_name='player'):
+    def create_player(self, player_name='test player'):
         """Method to create a player."""
         with transaction.atomic():
             if models.Nation.objects.count() > 0:
@@ -122,8 +121,7 @@ class HelperMethods:
             else:
                 role = self.create_playerrole()
             return models.Player.objects.create(
-                first_name=first_name,
-                last_name=last_name,
+                player_name=player_name,
                 jersy_number='7',
                 date_of_birth='1996-01-05',
                 nation=nation,
@@ -166,7 +164,6 @@ class HelperMethods:
 
     def create_team(self, team_name='test'):
         """Method to create a team."""
-        # print(inspect.stack()[1][3])
         with transaction.atomic():
             if models.League.objects.count() > 0:
                 league = models.League.objects.first()
@@ -176,11 +173,11 @@ class HelperMethods:
                 stadium = models.Stadium.objects.first()
             else:
                 stadium = self.create_stadium()
-            if len(models.Team.objects.all()) == len(models.Manager.objects.all()):
+            if len(models.Team.objects.all()) <= len(models.Manager.objects.all()):
                 manager = self.create_manager(
-                    first_name='new',
-                    last_name='manager',
+                    manager_name='new manager',
                 )
+
             team = models.Team.objects.create(
                 team_name=team_name,
                 est_date='1900-01-01',
@@ -292,20 +289,76 @@ class HelperMethods:
                 user=self.staff_user,
             )
 
-    # def create_matchevent(self, match=None):
-    #     """Method to create a match event."""
-    #     with transaction.atomic():
-    #         if match:
-    #             return models.Match.objects.create(
-    #                 fixture=fixture,
-    #                 user=self.staff_user,
-    #             )
-    #         else:
-    #             fixture = self.create_fixture(
-    #             home_team=home_team,
-    #             away_team=away_team,
-    #             )
-    #         return models.Match.objects.create(
-    #             fixture=fixture,
-    #             user=self.staff_user,
-    #         )
+    def create_eventtype(self, event_name='test_event'):
+        """Method to create a event type status."""
+        with transaction.atomic():
+            return models.EventType.objects.create(
+                event_name=event_name,
+                user=self.staff_user,
+            )
+
+    def create_pitchposition(self, pitch_area_name='test_area'):
+        """Method to create a pitch position status."""
+        with transaction.atomic():
+            pitchposition_exists = models.PitchLocation.objects.filter(
+                pitch_area_name=pitch_area_name,
+            ).exists()
+            if not pitchposition_exists:
+                return models.PitchLocation.objects.create(
+                    pitch_area_name=pitch_area_name,
+                    user=self.staff_user,
+                )
+            obj_count = models.PitchLocation.objects.count()
+            return models.PitchLocation.objects.create(
+                pitch_area_name=pitch_area_name+str(obj_count),
+                user=self.staff_user,
+            )
+
+    def create_matchevent(
+            self, event_name='test event', player='test_player',
+            associated_player='test_associatedplayer', minute=10,
+            second=40,
+            ):
+        """Method to create a match event."""
+        with transaction.atomic():
+            event_exists = models.EventType.objects.filter(
+                event_name=event_name,
+            ).exists()
+            # pdb.set_trace()
+            if event_exists:
+                event_type = models.EventType.objects.get(event_name=event_name)
+            else:
+                event_type = self.create_eventtype(event_name=event_name)
+            match = self.create_match()
+            player_exists = models.Player.objects.filter(
+                player_name=player,
+            ).exists()
+            if player_exists:
+                player = models.Player.objects.get(
+                    player_name=player,
+                )
+            else:
+                player = self.create_player(player_name=player)
+            pitch_area = self.create_pitchposition()
+            associated_player_exists = models.Player.objects.filter(
+                player_name=associated_player,
+            ).exists()
+            if associated_player_exists:
+                associated_player = models.Player.objects.get(
+                    player_name=associated_player,
+                )
+            else:
+                associated_player = self.create_player(
+                    player_name=associated_player,
+                )
+
+            return models.MatchEvent.objects.create(
+                event_type=event_type,
+                match=match,
+                player=player,
+                minute=minute,
+                second=second,
+                pitch_area=pitch_area,
+                associated_player=associated_player,
+                user=self.staff_user,
+            )
