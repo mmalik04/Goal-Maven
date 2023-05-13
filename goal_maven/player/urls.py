@@ -21,4 +21,3 @@ app_name = 'player'
 urlpatterns = [
     path('', include(router.urls)),
 ]
-# pdb.set_trace()
