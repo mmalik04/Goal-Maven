@@ -27,25 +27,3 @@ class PlayerViewSet(viewsets.ModelViewSet):
             return serializers.PlayerSerializer
 
         return self.serializer_class
-
-    # def create(self, request, *args, **kwargs):
-    #     pdb.set_trace()
-
-    # def perform_create(self, serializer):
-    #     """Create a new player."""
-    #     # pdb.set_trace()
-    #     serializer.save()
-
-# class ContinentViewSet(viewsets.ModelViewSet):
-#     """View for manage continent APIs."""
-#     serializer_class = serializers.ContinentDetailSerializer
-#     queryset = Player.objects.all()
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-#     def get_serializer_class(self):
-#         """Return the serializer class for request."""
-#         if self.action == 'list':
-#             return serializers.ContinentSerializer
-
-#         return self.serializer_class

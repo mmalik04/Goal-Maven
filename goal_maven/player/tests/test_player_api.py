@@ -10,7 +10,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from goal_maven.core.models import Player
-# from goal_maven.core import models
 
 from goal_maven.core.tests.helper_methods import HelperMethods
 
@@ -19,10 +18,11 @@ from goal_maven.player.serializers import (
     PlayerDetailSerializer,
 )
 
+from datetime import datetime
+
 # import pdb
 
 PLAYERS_URL = reverse('player:player-list')
-# CONTINENTS_URL = reverse('continent:continent-list')
 
 
 def detail_url(player_id):
@@ -30,7 +30,7 @@ def detail_url(player_id):
     return reverse('player:player-detail', args=[player_id])
 
 
-class PublicRecipeAPITests(TestCase):
+class PublicPlayerAPITests(TestCase):
     """Test unauthenticated API requests."""
 
     def setUp(self):
@@ -43,7 +43,7 @@ class PublicRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeApiTests(TestCase):
+class PrivatePlayerApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
@@ -81,51 +81,30 @@ class PrivateRecipeApiTests(TestCase):
         serializer = PlayerDetailSerializer(player)
         self.assertEqual(res.data, serializer.data)
 
-    # def test_create_player(self):
-    #     """Test creating a player."""
-    #     nation = self.helper.create_nation(nation_name='Pakistan')
-    #     role = self.helper.create_playerrole(role_name='Striker')
-    #     team = self.helper.create_team(team_name='Askari Strikers')
-    #     payload = {
-    #         'player_name': 'Player1',
-    #         'jersy_number': 7,
-    #         'date_of_birth': '1996-01-05',
-    #         'career_start': '2008-01-01',
-    #         'nation': 'nation',
-    #         'team': 'team',
-    #         'role': 'role',
-    #         'height': 1.82,
-    #         'weight': 85,
-    #         'total_appearances': 50,
-    #     }
-    #     # pdb.set_trace()
-    #     res = self.client.post(PLAYERS_URL, payload)
+    def test_create_player(self):
+        """Test creating a player."""
+        nation = self.helper.create_nation(nation_name='Pakistan')
+        role = self.helper.create_playerrole(role_name='Striker')
+        team = self.helper.create_team(team_name='Askari Strikers')
+        payload = {
+            'player_name': 'Player1',
+            'jersy_number': '7',
+            'date_of_birth': datetime.strptime('1996-01-05', '%Y-%m-%d').date(),
+            'career_start': datetime.strptime('2008-01-01', '%Y-%m-%d').date(),
+            'nation': nation.nation_id,
+            'team': team.team_id,
+            'role': role.role_id,
+            'height': 1.82,
+            'weight': 85,
+            'total_appearances': 50,
+        }
+        # pdb.set_trace()
+        res = self.client.post(PLAYERS_URL, payload)
+        player = Player.objects.get(player_id=res.data['player_id'])
 
-    #     self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-    #     player = Player.objects.get(player_id=res.data['player_id'])
-    #     for k, v in payload.items():
-    #         self.assertEqual(getattr(player, k), v)
-    #     self.assertEqual(player.player_name, 'Player1')
-
-    # def test_retrieve_continents(self):
-    #     """Test retrieving a list of continents."""
-    #     self.helper.create_continent(continent_name='continent1')
-    #     self.helper.create_continent(continent_name='continent2')
-
-    #     res = self.client.get(CONTINENTS_URL)
-
-    #     continents = Player.objects.all().order_by('continent_id')
-    #     serializer = ContinentSerializer(continents, many=True)
-    #     # pdb.set_trace()
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(res.data, serializer.data)
-
-    # def test_get_continent_detail(self):
-    #     """Test get continent detail."""
-    #     continent = self.helper.create_continent(continent_name='continent1')
-
-    #     url = detail_url(continent.continent_id)
-    #     res = self.client.get(url)
-
-    #     serializer = continentDetailSerializer(continent)
-    #     self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(
+            Player.objects.filter(player_id=res.data['player_id']).exists(),
+            True,
+        )
+        self.assertEqual(player.player_name, 'Player1')
