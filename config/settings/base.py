@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'goal_maven.core',
     'goal_maven.user',
+    'goal_maven.player',
 ]
 
 MIDDLEWARE = [

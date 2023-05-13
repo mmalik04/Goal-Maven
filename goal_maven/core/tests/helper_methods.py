@@ -15,13 +15,21 @@ from django.db import transaction
 class HelperMethods:
     """Helper class containing methods to create objects for testing."""
     def __init__(self):
-        self.staff_user = get_user_model().objects.create(
+        user_exists = get_user_model().objects.filter(
             email='teststaff@example.com',
-            password='testpass123',
-            first_name='test',
-            last_name='staff',
-            is_staff=True,
-        )
+        ).exists()
+        if not user_exists:
+            self.staff_user = get_user_model().objects.create(
+                email='teststaff@example.com',
+                password='testpass123',
+                first_name='test',
+                last_name='staff',
+                is_staff=True,
+            )
+        else:
+            self.staff_user = get_user_model().objects.get(
+                email='teststaff@example.com',
+            )
 
     def create_continent(self, continent_name='test_continent'):
         """Method to create a continent."""

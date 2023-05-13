@@ -96,7 +96,9 @@ class SuperuserOnlyManager(models.Manager):
     """Common manager to ensure only staff can create an object."""
     # if not user.is_superuser:
     #     raise ValueError("Permission Denied")
-    def create(self, user, *args, **kwargs):
+    def create(self, user=None, *args, **kwargs):
+        if not user:
+            return super().create(*args, **kwargs)
         if user.is_staff:
             return super().create(*args, **kwargs)
         raise ValueError("Permission Denied")
