@@ -8,6 +8,10 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
+from datetime import date
+
+from goal_maven.core.tests.helper_methods import HelperMethods
+
 
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
@@ -24,17 +28,30 @@ class PublicUserApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.helper = HelperMethods()
 
     def test_create_user_success(self):
         """Test creating a user is successful."""
+        self.helper = HelperMethods()
+        country = self.helper.create_nation(
+            nation_name='TestNation',
+        )
+        team = self.helper.create_team(
+            team_name='Real Madrid',
+        )
+        player = self.helper.create_player(
+            player_name='Vinicius Jr.'
+        )
         payload = {
             'email': 'test@example.com',
             'password': 'testpass123',
             'first_name': 'Test',
             'last_name': 'user',
             'username': 'testuser123',
-            'date_of_birth': '1996-01-05',
-            'country': 'pakistan',
+            'date_of_birth': date(1996, 1, 5),
+            'country': country.nation_id,
+            'favorite_team': [team.team_name],
+            'favorite_players': [player.player_name],
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -47,11 +64,9 @@ class PublicUserApiTests(TestCase):
         """Test error returned if user with email exists."""
         payload = {
             'email': 'test@example.com',
-            'password': 'testpass123',
-            'first_name': 'Test',
-            'last_name': 'user',
+            'username': 'newuser123'
         }
-        create_user(**payload)
+        self.helper.create_user(**payload)
         res = self.client.post(CREATE_USER_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -63,6 +78,8 @@ class PublicUserApiTests(TestCase):
             'password': 'pw',
             'first_name': 'Test',
             'last_name': 'user',
+            'username': 'user766',
+            'date_of_birth': date(1996, 1, 5),
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -74,16 +91,18 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_for_user_success(self):
         """Test generates token for valid credentials."""
+        email = 'thegreatuser@example.com'
         user_details = {
-            'email': 'test@example.com',
             'first_name': 'test',
             'last_name': 'user',
             'password': 'test-user-password123',
+            'username': 'noobmaster88',
+            'date_of_birth': date(1996, 1, 5)
         }
-        create_user(**user_details)
 
+        create_user(email=email, **user_details)
         payload = {
-            'email': user_details['email'],
+            'email': email,
             'password': user_details['password'],
         }
         res = self.client.post(TOKEN_URL, payload)
@@ -98,6 +117,8 @@ class PublicUserApiTests(TestCase):
             password='goodpass',
             first_name='test',
             last_name='user',
+            username='noobmaster88',
+            date_of_birth=date(1996, 1, 5),
         )
 
         payload = {
@@ -142,16 +163,14 @@ class PrivateUserApiTests(TestCase):
     """Test API requests that require authentication."""
 
     def setUp(self):
+        self.helper = HelperMethods()
         self.user = create_user(
             email='test@example.com',
             password='testpass123',
             first_name='test',
             last_name='user',
             username='testuser123',
-            date_of_birth='1996-01-05',
-            country='Pakistan',
-            favorite_team='Real Madrid',
-            favorite_players='Cristiano Ronaldo',
+            date_of_birth=date(1996, 1, 5),
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
@@ -166,7 +185,7 @@ class PrivateUserApiTests(TestCase):
             'first_name': self.user.first_name,
             'last_name': self.user.last_name,
             'username': self.user.username,
-            'date_of_birth': self.user.date_of_birth,
+            'date_of_birth': self.user.date_of_birth.strftime('%Y-%m-%d'),
             'country': self.user.country,
             'favorite_team': self.user.favorite_team,
             'favorite_players': self.user.favorite_players,
@@ -180,22 +199,28 @@ class PrivateUserApiTests(TestCase):
 
     def test_update_user_profile_success(self):
         """Test updating the user profile for the authenticated user."""
+        country = self.helper.create_nation(nation_name='Pakistan')
+        favorite_team = self.helper.create_team(team_name='Arsenal')
+        messi = self.helper.create_player(player_name='Messi')
+        ronaldo = self.helper.create_player(player_name='Ronaldo')
         payload = {
+            'email': self.user.email,
             'password': 'newpassword123',
             'first_name': 'updatedtest',
             'last_name': 'updateduser',
-            'country': 'England',
-            'favorite_team': 'Barcelona',
-            'favorite_players': 'Crisiano Ronaldo, Lionel Messi, Luka Modric',
+            'username': self.user.username,
+            'date_of_birth': self.user.date_of_birth,
+            'country': country.nation_id,
+            'favorite_team': [favorite_team.team_name],
+            'favorite_players': [messi.player_name, ronaldo.player_name],
         }
 
         res = self.client.patch(ME_URL, payload)
-
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.user.refresh_from_db()
         self.assertEqual(self.user.first_name, payload['first_name'])
         self.assertEqual(self.user.last_name, payload['last_name'])
-        self.assertEqual(self.user.country, payload['country'])
+        self.assertEqual(self.user.country.nation_id, payload['country'])
         self.assertEqual(self.user.favorite_team, payload['favorite_team'])
         self.assertEqual(self.user.favorite_players, payload['favorite_players'])
         self.assertTrue(self.user.check_password(payload['password']))
-        self.assertEqual(res.status_code, status.HTTP_200_OK)

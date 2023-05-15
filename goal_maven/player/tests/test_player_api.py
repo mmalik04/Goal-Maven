@@ -1,8 +1,6 @@
 """
 Tests for player APIs.
 """
-
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
@@ -20,7 +18,6 @@ from goal_maven.player.serializers import (
 
 from datetime import datetime
 
-# import pdb
 
 PLAYERS_URL = reverse('player:player-list')
 
@@ -48,15 +45,9 @@ class PrivatePlayerApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.staff_user = get_user_model().objects.create_user(
-            email='user@example.com',
-            password='testpass123',
-            first_name='test',
-            last_name='user',
-            is_staff=True,
-        )
-        self.client.force_authenticate(self.staff_user)
         self.helper = HelperMethods()
+        self.staff_user = self.helper.get_staff()
+        self.client.force_authenticate(self.staff_user)
 
     def test_retrieve_players(self):
         """Test retrieving a list of players."""
@@ -67,7 +58,6 @@ class PrivatePlayerApiTests(TestCase):
 
         players = Player.objects.all().order_by('player_id')
         serializer = PlayerSerializer(players, many=True)
-        # pdb.set_trace()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
@@ -98,7 +88,6 @@ class PrivatePlayerApiTests(TestCase):
             'weight': 85,
             'total_appearances': 50,
         }
-        # pdb.set_trace()
         res = self.client.post(PLAYERS_URL, payload)
         player = Player.objects.get(player_id=res.data['player_id'])
 
@@ -163,35 +152,14 @@ class PrivatePlayerApiTests(TestCase):
         self.assertEqual(player.weight, payload['weight'])
         self.assertEqual(player.total_appearances, payload['total_appearances'])
 
-    # def test_update_user_returns_error(self):
-    #     """Test changing the recipe user results in an error."""
-    #     new_user = create_user(email='user2@example.com', password='test123')
-    #     recipe = create_recipe(user=self.user)
+    def test_delete_player(self):
+        """Test deleting a player successful."""
+        player = self.helper.create_player(
+            player_name='shakeel',
+        )
 
-    #     payload = {'user': new_user.id}
-    #     url = detail_url(recipe.id)
-    #     self.client.patch(url, payload)
+        url = detail_url(player.player_id)
+        res = self.client.delete(url)
 
-    #     recipe.refresh_from_db()
-    #     self.assertEqual(recipe.user, self.user)
-
-    # def test_delete_recipe(self):
-    #     """Test deleting a recipe successful."""
-    #     recipe = create_recipe(user=self.user)
-
-    #     url = detail_url(recipe.id)
-    #     res = self.client.delete(url)
-
-    #     self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
-    #     self.assertFalse(Recipe.objects.filter(id=recipe.id).exists())
-
-    # def test_recipe_other_users_recipe_error(self):
-    #     """Test trying to delete another users recipe gives error."""
-    #     new_user = create_user(email='user2@example.com', password='test123')
-    #     recipe = create_recipe(user=new_user)
-
-    #     url = detail_url(recipe.id)
-    #     res = self.client.delete(url)
-
-    #     self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
-    #     self.assertTrue(Recipe.objects.filter(id=recipe.id).exists())
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Player.objects.filter(player_id=player.player_id).exists())

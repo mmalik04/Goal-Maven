@@ -16,7 +16,7 @@ class UserAdmin(BaseUserAdmin):
         (_('Details'), {'fields': ('email', 'password')}),
         (_('Personal Info'), {'fields': (
             'first_name', 'last_name', 'username', 'date_of_birth',
-            'country', 'groups',
+            'country', 'favorite_team', 'favorite_players', 'groups',
         )}),
         (
             _('Permissions'),
@@ -40,6 +40,11 @@ class UserAdmin(BaseUserAdmin):
                 'password2',
                 'first_name',
                 'last_name',
+                'username',
+                'date_of_birth',
+                'country',
+                'favorite_team',
+                'favorite_players',
                 'is_active',
                 'is_staff',
                 'is_superuser',

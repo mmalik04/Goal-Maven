@@ -7,6 +7,8 @@ from goal_maven.core import models
 from django.contrib.auth import get_user_model
 from django.db import transaction
 
+from datetime import date
+
 # import pdb
 # import inspect
 # import os
@@ -14,26 +16,104 @@ from django.db import transaction
 
 class HelperMethods:
     """Helper class containing methods to create objects for testing."""
+
     def __init__(self):
-        user_exists = get_user_model().objects.filter(
-            email='teststaff@example.com',
+        self.staff_user = self.create_staff(email='staff@example.com')
+        self.user = self.create_user(email='user@example.com')
+
+    def get_staff(self):
+        return self.staff_user
+
+    def get_user(self):
+        return self.user
+
+    def create_staff(self, **params):
+        if 'email' not in params:
+            params['email'] = 'staff@example.com'
+        staff_user_exists = get_user_model().objects.filter(
+            email=params['email'],
         ).exists()
-        if not user_exists:
-            self.staff_user = get_user_model().objects.create(
-                email='teststaff@example.com',
-                password='testpass123',
-                first_name='test',
-                last_name='staff',
-                is_staff=True,
+        if staff_user_exists:
+            return get_user_model().objects.get(email=params['email'])
+        if 'password' not in params:
+            params['password'] = 'testpass123'
+        if 'username' not in params:
+            params['username'] = 'userstaff123'
+        if 'date_of_birth' not in params:
+            params['date_of_birth'] = date(1996, 1, 5)
+        if 'first_name' not in params:
+            params['first_name'] = 'User'
+        if 'last_name' not in params:
+            params['last_name'] = 'Staff'
+        if 'country' not in params:
+            params['country'] = None
+        if 'favorite_team' not in params:
+            params['favorite_team'] = None
+        if 'favorite_players' not in params:
+            params['favorite_players'] = None
+        try:
+            staff_user = get_user_model().objects.create(
+                email=params['email'],
+                password=params['password'],
+                username=params['username'],
+                date_of_birth=params['date_of_birth'],
+                first_name=params['first_name'],
+                last_name=params['last_name'],
+                country=params['country'],
+                favorite_team=params['favorite_team'],
+                favorite_players=params['favorite_players'],
+                is_staff=True
             )
-        else:
-            self.staff_user = get_user_model().objects.get(
-                email='teststaff@example.com',
+
+            return staff_user
+        except Exception as e:
+            raise e
+
+    def create_user(self, **params):
+        if 'email' not in params:
+            params['email'] = 'user@example.com'
+        user_exists = get_user_model().objects.filter(
+            email=params['email'],
+        ).exists()
+        if user_exists:
+            return get_user_model().objects.get(email=params['email'])
+        if 'password' not in params:
+            params['password'] = 'testpass123'
+        if 'username' not in params:
+            params['username'] = 'usernormal123'
+        if 'date_of_birth' not in params:
+            params['date_of_birth'] = date(1996, 1, 5)
+        if 'first_name' not in params:
+            params['first_name'] = 'User'
+        if 'last_name' not in params:
+            params['last_name'] = 'Normal'
+        if 'country' not in params:
+            params['country'] = None
+        if 'favorite_team' not in params:
+            params['favorite_team'] = None
+        if 'favorite_players' not in params:
+            params['favorite_players'] = None
+        try:
+            user = get_user_model().objects.create(
+                email=params['email'],
+                password=params['password'],
+                username=params['username'],
+                date_of_birth=params['date_of_birth'],
+                first_name=params['first_name'],
+                last_name=params['last_name'],
+                country=params['country'],
+                favorite_team=params['favorite_team'],
+                favorite_players=params['favorite_players'],
             )
+
+            return user
+        except Exception as e:
+            raise e
 
     def create_continent(self, continent_name='test_continent'):
         """Method to create a continent."""
         with transaction.atomic():
+
             return models.Continent.objects.create(
                 continent_name=continent_name,
                 user=self.staff_user,
@@ -46,6 +126,7 @@ class HelperMethods:
                 continent = models.Continent.objects.first()
             else:
                 continent = self.create_continent()
+
             return models.Nation.objects.create(
                 nation_name=nation_name,
                 continent=continent,
@@ -59,6 +140,7 @@ class HelperMethods:
                 nation = models.Nation.objects.first()
             else:
                 nation = self.create_nation()
+
             return models.City.objects.create(
                 city_name=city_name,
                 nation=nation,
@@ -72,6 +154,7 @@ class HelperMethods:
                 city = models.City.objects.first()
             else:
                 city = self.create_city()
+
             return models.Stadium.objects.create(
                 stadium_name=stadium_name,
                 city=city,
@@ -86,6 +169,7 @@ class HelperMethods:
                 nation = models.Nation.objects.first()
             else:
                 nation = self.create_nation()
+
             return models.Manager.objects.create(
                 manager_name=manager_name,
                 date_of_birth='1970-01-01',
@@ -102,6 +186,7 @@ class HelperMethods:
                 nation = models.Nation.objects.first()
             else:
                 nation = self.create_nation()
+
             return models.Referee.objects.create(
                 referee_name=referee_name,
                 nation=nation,
@@ -112,6 +197,7 @@ class HelperMethods:
     def create_playerrole(self, role_name='test_role'):
         """Method to create a player role."""
         with transaction.atomic():
+
             return models.PlayerRole.objects.create(
                 role_name=role_name,
                 user=self.staff_user,
@@ -128,6 +214,7 @@ class HelperMethods:
                 role = models.PlayerRole.objects.first()
             else:
                 role = self.create_playerrole()
+
             return models.Player.objects.create(
                 player_name=player_name,
                 jersy_number='7',
@@ -144,6 +231,7 @@ class HelperMethods:
     def create_season(self, season_name='test season'):
         """Method to create a season."""
         with transaction.atomic():
+
             return models.Season.objects.create(
                 season_name=season_name,
                 start_date='2022-01-01',
@@ -163,6 +251,7 @@ class HelperMethods:
                 season = models.Season.objects.first()
             else:
                 season = self.create_season()
+
             return models.League.objects.create(
                 league_name=league_name,
                 nation=nation,
@@ -195,6 +284,7 @@ class HelperMethods:
                 user=self.staff_user,
             )
             manager.team = team
+
             return team
 
     def create_leaguetable(self, team_name='Test Team', points=0, position=1):
@@ -212,6 +302,7 @@ class HelperMethods:
                 team = models.Team.objects.get(team_name=team_name)
             except ObjectDoesNotExist:
                 team = self.create_team(team_name)
+
             return models.LeagueTable.objects.create(
                 league=league,
                 season=season,
@@ -224,6 +315,7 @@ class HelperMethods:
     def create_matchstatus(self, status_name='test_status'):
         """Method to create a match status."""
         with transaction.atomic():
+
             return models.MatchStatus.objects.create(
                 status_name=status_name,
                 user=self.staff_user,
@@ -264,6 +356,7 @@ class HelperMethods:
             except ObjectDoesNotExist:
                 away_team = self.create_team(away_team)
             # pdb.set_trace()
+
             return models.Fixture.objects.create(
                 season=season,
                 league=league,
@@ -283,6 +376,7 @@ class HelperMethods:
         """Method to create a match."""
         with transaction.atomic():
             if fixture:
+
                 return models.Match.objects.create(
                     fixture=fixture,
                     user=self.staff_user,
@@ -292,6 +386,7 @@ class HelperMethods:
                     home_team=home_team,
                     away_team=away_team,
                 )
+
             return models.Match.objects.create(
                 fixture=fixture,
                 user=self.staff_user,
@@ -300,6 +395,7 @@ class HelperMethods:
     def create_eventtype(self, event_name='test_event'):
         """Method to create a event type status."""
         with transaction.atomic():
+
             return models.EventType.objects.create(
                 event_name=event_name,
                 user=self.staff_user,
@@ -312,11 +408,13 @@ class HelperMethods:
                 pitch_area_name=pitch_area_name,
             ).exists()
             if not pitchposition_exists:
+
                 return models.PitchLocation.objects.create(
                     pitch_area_name=pitch_area_name,
                     user=self.staff_user,
                 )
             obj_count = models.PitchLocation.objects.count()
+
             return models.PitchLocation.objects.create(
                 pitch_area_name=pitch_area_name+str(obj_count),
                 user=self.staff_user,

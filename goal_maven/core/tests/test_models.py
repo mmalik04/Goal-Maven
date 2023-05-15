@@ -1,6 +1,7 @@
 """
 Tests for models.
 """
+from datetime import date
 from datetime import datetime
 from datetime import timedelta
 
@@ -20,39 +21,27 @@ class ModelTests(TestCase):
     def setUp(self):
         """Create admin user for test."""
         self.staff_client = Client()
+        self.helper = HelperMethods()
+        self.staff_user = self.helper.get_staff()
 
-        email = 'testadmin@example.com'
-        password = 'testpass123'
-        first_name = 'test'
-        last_name = 'admin'
-        self.staff_user = get_user_model().objects.create_user(
-            email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-            is_staff=True
-        )
         self.staff_client.force_login(self.staff_user)
         self.user_client = Client()
-        self.user = get_user_model().objects.create_user(
-            email='user@example.com',
-            password='testpass123',
-            first_name='test',
-            last_name='User',
-        )
+        self.user = self.helper.get_user()
         self.user_client.force_login(self.user)
-
-        self.helper = HelperMethods()
 
     def test_create_user_with_email_successful(self):
         """Test creating a user with an email is successful."""
         email = 'test@example.com'
         password = 'testpass123'
+        username = 'testuser123'
+        date_of_birth = date(1996, 1, 5)
         first_name = 'test'
         last_name = 'user'
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
+            username=username,
+            date_of_birth=date_of_birth,
             first_name=first_name,
             last_name=last_name,
         )
@@ -63,15 +52,18 @@ class ModelTests(TestCase):
     def test_new_user_email_normalized(self):
         """Test email is normalized for new users."""
         sample_emails = [
-            ['test1@EXAMPLE.com', 'test1@example.com'],
-            ['Test2@Example.com', 'Test2@example.com'],
-            ['TEST3@EXAMPLE.com', 'TEST3@example.com'],
-            ['test4@example.COM', 'test4@example.com'],
+            ['test1@EXAMPLE.com', 'test1@example.com', 'test1user123'],
+            ['Test2@Example.com', 'Test2@example.com', 'test2user123'],
+            ['TEST3@EXAMPLE.com', 'TEST3@example.com', 'test3user123'],
+            ['test4@example.COM', 'test4@example.com', 'test4user123'],
         ]
-        for email, expected in sample_emails:
+        date_of_birth = date(1996, 1, 5)
+        for email, expected, username in sample_emails:
             user = get_user_model().objects.create_user(
                 email=email,
                 password='sample123',
+                username=username,
+                date_of_birth=date_of_birth,
                 first_name='test',
                 last_name='user',
             )
@@ -79,18 +71,33 @@ class ModelTests(TestCase):
 
     def test_new_user_without_email_raises_error(self):
         """Test that creating a user without an email raises a ValueError."""
+        country = self.helper.create_nation(
+            nation_name='TestNation',
+        )
         with self.assertRaises(ValueError):
-            get_user_model().objects.create_user('', 'test123')
+            get_user_model().objects.create_user(
+                email='test@example.com',
+                password='test123',
+                first_name='test',
+                last_name='user',
+                username='',
+                country=country,
+                date_of_birth=date(1996, 1, 5),
+            )
 
     def test_new_user_with_correct_name_created(self):
         """Test user's first and last name is created correctly."""
         email = 'test@example.com'
         password = 'testpass123'
+        username = 'testuser123'
+        date_of_birth = date(1996, 1, 5)
         first_name = 'test'
         last_name = 'user'
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
+            username=username,
+            date_of_birth=date_of_birth,
             first_name=first_name,
             last_name=last_name,
         )
@@ -102,10 +109,14 @@ class ModelTests(TestCase):
         """Test user's empty last name raises error."""
         email = 'test@example.com'
         password = 'testpass123'
+        username = 'testuser123'
+        date_of_birth = date(1996, 1, 5)
         with self.assertRaises(ValueError):
             get_user_model().objects.create_user(
                 email=email,
                 password=password,
+                username=username,
+                date_of_birth=date_of_birth,
             )
 
     def test_new_user_with_correct_username_created(self):
@@ -113,12 +124,14 @@ class ModelTests(TestCase):
         email = 'test@example.com'
         password = 'testpass123'
         username = 'testuser69'
+        date_of_birth = date(1996, 1, 5)
         first_name = 'test'
         last_name = 'user'
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
             username=username,
+            date_of_birth=date_of_birth,
             first_name=first_name,
             last_name=last_name,
         )
@@ -131,11 +144,12 @@ class ModelTests(TestCase):
         password = 'testpass123'
         first_name = 'test'
         last_name = 'user'
-        date_of_birth = datetime(1996, 1, 5).date()
-        date_of_birth = date_of_birth.strftime('%Y-%m-%d')
+        username = 'testuser69'
+        date_of_birth = date(1996, 1, 5)
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
+            username=username,
             first_name=first_name,
             last_name=last_name,
             date_of_birth=date_of_birth,
@@ -149,12 +163,14 @@ class ModelTests(TestCase):
         password = 'testpass123'
         first_name = 'test'
         last_name = 'user'
+        username = 'testuser123'
         date_of_birth = datetime.now() + timedelta(days=1)
-        date_of_birth = date_of_birth.date().strftime('%Y-%m-%d')
+        date_of_birth = date_of_birth.date()
         with self.assertRaises(ValidationError):
             get_user_model().objects.create_user(
                 email=email,
                 password=password,
+                username=username,
                 first_name=first_name,
                 last_name=last_name,
                 date_of_birth=date_of_birth,
@@ -166,12 +182,14 @@ class ModelTests(TestCase):
         password = 'testpass123'
         first_name = 'test'
         last_name = 'user'
+        username = 'testuser123'
         date_of_birth = datetime.now() - timedelta(days=1824)
-        date_of_birth = date_of_birth.date().strftime('%Y-%m-%d')
+        date_of_birth = date_of_birth.date()
         with self.assertRaises(ValidationError):
             get_user_model().objects.create_user(
                 email=email,
                 password=password,
+                username=username,
                 first_name=first_name,
                 last_name=last_name,
                 date_of_birth=date_of_birth,
@@ -183,10 +201,17 @@ class ModelTests(TestCase):
         password = 'testpass123'
         first_name = 'test'
         last_name = 'user'
-        favorite_team = 'Real Madrid'
+        username = 'testuser123'
+        date_of_birth = date(1996, 1, 5)
+        team = self.helper.create_team(
+            team_name='Real Madrid',
+        )
+        favorite_team = [team]
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
+            username=username,
+            date_of_birth=date_of_birth,
             first_name=first_name,
             last_name=last_name,
             favorite_team=favorite_team,
@@ -200,10 +225,20 @@ class ModelTests(TestCase):
         password = 'testpass123'
         first_name = 'test'
         last_name = 'user'
-        favorite_players = 'Cristiano Ronaldo, Lionel Messi'
+        username = 'testuser123'
+        date_of_birth = date(1996, 1, 5)
+        player1 = self.helper.create_player(
+            player_name='Cristiano Ronaldo',
+        )
+        player2 = self.helper.create_player(
+            player_name='Lionel Messi',
+        )
+        favorite_players = [player1, player2]
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
+            username=username,
+            date_of_birth=date_of_birth,
             first_name=first_name,
             last_name=last_name,
             favorite_players=favorite_players,
@@ -217,32 +252,48 @@ class ModelTests(TestCase):
         password = 'testpass123'
         first_name = 'test'
         last_name = 'user'
-        country = 'Pakistan'
+        username = 'testuser123'
+        date_of_birth = date(1996, 1, 5)
+        nation = self.helper.create_nation(
+            nation_name='Pakistan',
+        )
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
+            username=username,
+            date_of_birth=date_of_birth,
             first_name=first_name,
             last_name=last_name,
-            country=country,
+            country=nation,
         )
 
-        self.assertEqual(user.country, country)
+        self.assertEqual(user.country, nation)
 
     def test_update_user_details_is_successful(self):
         """Test updating user's details is successful."""
         email = 'test@example.com'
-        password = 'testpass123'
-        first_name = 'test'
-        last_name = 'user'
-        country = 'Pakistan'
-        date_of_birth = '1997-01-05'
-        favorite_team = 'Bayern Munich'
-        favorite_players = 'Karim Benzema'
-        user = get_user_model().objects.create_user(
+        username = 'testuser123'
+        country = self.helper.create_nation(
+            nation_name='Pakistan',
+        )
+        date_of_birth = date(1980, 1, 5)
+        team1 = self.helper.create_team(
+            team_name='team1'
+        )
+        team2 = self.helper.create_team(
+            team_name='team2'
+        )
+        favorite_team = [team1, team2]
+        player1 = self.helper.create_player(
+            player_name='player1'
+        )
+        player2 = self.helper.create_player(
+            player_name='player2'
+        )
+        favorite_players = [player1, player2]
+        user = self.helper.create_user(
             email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
+            username=username,
         )
 
         updated_password = 'updatedtestpass123'
@@ -251,6 +302,7 @@ class ModelTests(TestCase):
         extra_fields = {
             'first_name': updated_first_name,
             'last_name': updated_last_name,
+            'password': updated_password,
             'country': country,
             'date_of_birth': date_of_birth,
             'favorite_team': favorite_team,
@@ -259,7 +311,6 @@ class ModelTests(TestCase):
 
         updated_user = get_user_model().objects.update_user(
             user=user,
-            password=updated_password,
             **extra_fields,
         )
 
@@ -275,10 +326,12 @@ class ModelTests(TestCase):
     def test_create_superuser(self):
         """Test creating a superuser."""
         user = get_user_model().objects.create_superuser(
-            'test@example.com',
-            'test123',
+            email='testsuper@example.com',
+            password='test123',
             first_name='test',
-            last_name='superuser'
+            last_name='superuser',
+            username='testsuper123',
+            date_of_birth=date(1996, 1, 5),
         )
 
         self.assertTrue(user.is_superuser)

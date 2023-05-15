@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import Client
 
+from datetime import date
+
 from goal_maven.core.tests.helper_methods import HelperMethods
 
 # import pdb
@@ -17,20 +19,18 @@ class AdminSiteTests(TestCase):
     def setUp(self):
         """Create user and client."""
         self.client = Client()
+        self.helper = HelperMethods()
         self.admin_user = get_user_model().objects.create_superuser(
             email='admin@example.com',
             password='testpass123',
             first_name='test',
-            last_name='admin'
+            last_name='admin',
+            username='useradmin69',
+            date_of_birth=date(1996, 1, 5),
         )
         self.client.force_login(self.admin_user)
-        self.user = get_user_model().objects.create_user(
-            email='user@example.com',
-            password='testpass123',
-            first_name='Test',
-            last_name='User',
-        )
-        self.helper = HelperMethods()
+        self.user = self.helper.get_user()
+
         self.continent = self.helper.create_continent()
         self.nation = self.helper.create_nation()
         self.city = self.helper.create_city()

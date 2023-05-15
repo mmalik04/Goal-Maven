@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='favorite_players',
-            field=models.TextField(blank=True, verbose_name='Favorite Players'),
+            field=models.TextField(blank=True, null=True, verbose_name='Favorite Players'),
         ),
         migrations.AddField(
             model_name='user',

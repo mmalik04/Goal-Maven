@@ -7,8 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 from goal_maven.core.models import Player
 from goal_maven.player import serializers
 
-# import pdb
-
 
 class PlayerViewSet(viewsets.ModelViewSet):
     """View for manage player APIs."""

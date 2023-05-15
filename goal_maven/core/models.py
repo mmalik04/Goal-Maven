@@ -2,6 +2,7 @@
 Database models.
 """
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
@@ -16,20 +17,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('First Name'), max_length=50, blank=False)
     last_name = models.CharField(_('Last Name'), max_length=50, blank=False)
     username = models.CharField(
-        _('Username'), max_length=50, null=True, blank=True,
+        _('Username'), max_length=50, blank=False, unique=True,
     )
     date_of_birth = models.DateField(
-        _('Date of birth'), null=True, blank=True,
+        _('Date of birth'), blank=False,
     )
     date_joined = models.DateTimeField(auto_now_add=True)
-    country = models.CharField(
-        _('Country'), max_length=255, blank=True,
+    country = models.ForeignKey(
+        'Nation', on_delete=models.SET_NULL, null=True, blank=True, default=None,
     )
-    favorite_team = models.CharField(
-        _('Favorite Team'), max_length=255, null=True, blank=True,
+    favorite_team = ArrayField(models.CharField(
+        _('Favorite Teams'), max_length=50), null=True, blank=True, default=None,
     )
-    favorite_players = models.TextField(
-        _('Favorite Players'), null=True, blank=True,
+    favorite_players = ArrayField(models.CharField(
+        _('Favorite Players'), max_length=50), null=True, blank=True, default=None,
     )
 
     is_active = models.BooleanField(default=True)
@@ -77,7 +78,6 @@ class Stadium(models.Model):
     stadium_id = models.AutoField(primary_key=True)
     stadium_name = models.CharField(max_length=50, blank=False, unique=True)
     city = models.ForeignKey('City', on_delete=models.CASCADE, blank=False)
-    # nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
     capacity = models.IntegerField(default=0)
 
     objects = SuperuserOnlyManager()
@@ -93,8 +93,8 @@ class Team(models.Model):
     league = models.ForeignKey('League', on_delete=models.CASCADE, blank=False)
     stadium = models.ForeignKey('Stadium', on_delete=models.CASCADE, blank=False)
     manager = models.OneToOneField(
-        'Manager', on_delete=models.SET_NULL, null=True, related_name='team_manager',
-        unique=True,
+        'Manager', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='team_manager', unique=True, default=None,
     )
 
     objects = SuperuserOnlyManager()
@@ -108,7 +108,7 @@ class Manager(models.Model):
     manager_name = models.CharField(max_length=50, blank=False)
     team = models.OneToOneField(
         'Team', on_delete=models.SET_NULL, null=True, blank=True,
-        related_name='manager_of_team', unique=True,
+        related_name='manager_of_team', unique=True, default=None,
     )
     date_of_birth = models.DateField(blank=False)
     nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
@@ -123,7 +123,7 @@ class Manager(models.Model):
 class Player(models.Model):
     player_id = models.AutoField(primary_key=True)
     player_name = models.CharField(max_length=50, blank=False)
-    jersy_number = models.CharField(max_length=50, null=True, blank=True)
+    jersy_number = models.CharField(max_length=50, null=True, blank=True, default=None,)
     date_of_birth = models.DateField(blank=False)
     career_start = models.DateField(blank=False)
     nation = models.ForeignKey('Nation', on_delete=models.CASCADE, blank=False)
@@ -133,6 +133,7 @@ class Player(models.Model):
     total_appearances = models.IntegerField(default=0)
     team = models.ForeignKey(
         'Team', on_delete=models.CASCADE, null=True, blank=True,
+        default=None,
     )
 
     objects = SuperuserOnlyManager()
@@ -194,20 +195,20 @@ class League(models.Model):
     match_day = models.SmallIntegerField(default=0)
     top_scorer = models.ForeignKey(
         'Player', on_delete=models.CASCADE, null=True, blank=True,
-        related_name='top_scorer',
+        related_name='top_scorer', default=None,
     )
     most_assists = models.ForeignKey(
         'Player', on_delete=models.CASCADE, null=True, blank=True,
-        related_name='most_assists',
+        related_name='most_assists', default=None,
     )
     is_concluded = models.BooleanField(default=False)
     champion_team = models.ForeignKey(
         'Team', on_delete=models.CASCADE, null=True, blank=True,
-        related_name='champion_team',
+        related_name='champion_team', default=None,
     )
     runner_up_team = models.ForeignKey(
         'Team', on_delete=models.CASCADE, null=True, blank=True,
-        related_name='runner_up_team',
+        related_name='runner_up_team', default=None,
     )
 
     objects = SuperuserOnlyManager()
@@ -222,7 +223,7 @@ class LeagueTable(models.Model):
     season = models.ForeignKey('Season', on_delete=models.CASCADE, blank=False)
     team = models.ForeignKey('Team', on_delete=models.CASCADE, blank=False)
     points = models.SmallIntegerField(default=0)
-    position = models.SmallIntegerField(null=True, blank=True)
+    position = models.SmallIntegerField(null=True, blank=True, default=None)
     matches_played = models.SmallIntegerField(default=0)
     matches_won = models.SmallIntegerField(default=0)
     matches_drawn = models.SmallIntegerField(default=0)
@@ -268,7 +269,7 @@ class Match(models.Model):
     attendance = models.IntegerField(default=0)
     result = models.BooleanField(default=False)
     winner_team = models.ForeignKey(
-        'Team', on_delete=models.CASCADE, null=True, blank=True,
+        'Team', on_delete=models.CASCADE, null=True, blank=True, default=None,
     )
     extra_time = models.BooleanField(default=False)
     injury_time = models.SmallIntegerField(default=0)
@@ -314,11 +315,11 @@ class MatchEvent(models.Model):
     second = models.SmallIntegerField(default=0)
     is_extra_time = models.BooleanField(default=False)
     pitch_area = models.ForeignKey(
-        'PitchLocation', on_delete=models.CASCADE, null=True, blank=True,
+        'PitchLocation', on_delete=models.CASCADE, null=True, blank=True, default=None,
     )
     associated_player = models.ForeignKey(
         'Player', on_delete=models.CASCADE, null=True, blank=True,
-        related_name='associated_player',
+        related_name='associated_player', default=None,
     )
 
     objects = SuperuserOnlyManager()

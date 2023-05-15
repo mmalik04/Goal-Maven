@@ -4,6 +4,7 @@ Customized createsuperuser command.
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 import getpass
+from datetime import datetime
 
 
 class Command(BaseCommand):
@@ -32,6 +33,24 @@ class Command(BaseCommand):
                 password = None
                 continue
 
+        # Prompt for the first name
+        first_name_inp = None
+        while not first_name_inp:
+            first_name = 'Test'
+            first_name_inp = input(f'First Name ({first_name}): ')
+            if not first_name_inp:
+                first_name_inp = first_name
+                # self.stderr.write('Error: First Name cannot be blank.')
+
+        # Prompt for the last name
+        last_name_inp = None
+        while not last_name_inp:
+            last_name = 'Admin'
+            last_name_inp = input(f'Last Name ({last_name}): ')
+            if not last_name_inp:
+                last_name_inp = last_name
+                # self.stderr.write('Error: Last Name cannot be blank.')
+
         # Prompt for username
         username = None
         while not username:
@@ -39,26 +58,15 @@ class Command(BaseCommand):
             if not username:
                 self.stderr.write('Error: Username cannot be blank.')
 
-        # Prompt for first name
-        first_name = None
-        while not first_name:
-            first_name = input('First Name: ')
-            if not first_name:
-                self.stderr.write('Error: First Name cannot be blank.')
-
-        # Prompt for last name
-        last_name = None
-        while not last_name:
-            last_name = input('Last Name: ')
-            if not last_name:
-                self.stderr.write('Error: Last Name cannot be blank.')
-
         # Prompt for date of birth
-        date_of_birth = None
-        while not date_of_birth:
-            date_of_birth = input('Date of birth (YYYY-MM-DD): ')
-            if not date_of_birth:
-                self.stderr.write('Error: Date of birth cannot be blank.')
+        date_of_birth_inp = None
+        while not date_of_birth_inp:
+            date_of_birth = '1996-01-05'
+            date_of_birth_inp = input(f'Date of birth ({date_of_birth}): ')
+            if not date_of_birth_inp:
+                date_of_birth_inp = date_of_birth
+                # self.stderr.write('Error: Date of birth cannot be blank.')
+        date_of_birth_format = datetime.strptime(date_of_birth_inp, '%Y-%m-%d').date()
 
         User = get_user_model()
 
@@ -69,9 +77,9 @@ class Command(BaseCommand):
                 email=email,
                 password=password,
                 username=username,
-                first_name=first_name,
-                last_name=last_name,
-                date_of_birth=date_of_birth,
+                first_name=first_name_inp,
+                last_name=last_name_inp,
+                date_of_birth=date_of_birth_format,
             )
             self.stdout.write(self.style.SUCCESS('Superuser created successfully.'))
         else:

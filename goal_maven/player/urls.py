@@ -10,8 +10,6 @@ from rest_framework.routers import DefaultRouter
 
 from goal_maven.player import views
 
-# import pdb
-
 
 router = DefaultRouter()
 router.register('players', views.PlayerViewSet)
