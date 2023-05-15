@@ -116,7 +116,6 @@ class HelperMethods:
 
             return models.Continent.objects.create(
                 continent_name=continent_name,
-                user=self.staff_user,
             )
 
     def create_nation(self, nation_name='test_nation'):
@@ -130,7 +129,6 @@ class HelperMethods:
             return models.Nation.objects.create(
                 nation_name=nation_name,
                 continent=continent,
-                user=self.staff_user,
             )
 
     def create_city(self, city_name='test_city'):
@@ -144,7 +142,6 @@ class HelperMethods:
             return models.City.objects.create(
                 city_name=city_name,
                 nation=nation,
-                user=self.staff_user,
             )
 
     def create_stadium(self, stadium_name='test_stadium'):
@@ -159,7 +156,6 @@ class HelperMethods:
                 stadium_name=stadium_name,
                 city=city,
                 capacity=90000,
-                user=self.staff_user,
             )
 
     def create_manager(self, manager_name='test manager', team=None):
@@ -176,7 +172,6 @@ class HelperMethods:
                 nation=nation,
                 team=team,
                 career_start='1995-01-01',
-                user=self.staff_user,
             )
 
     def create_referee(self, referee_name='test referee'):
@@ -191,7 +186,6 @@ class HelperMethods:
                 referee_name=referee_name,
                 nation=nation,
                 career_start='1995-01-01',
-                user=self.staff_user,
             )
 
     def create_playerrole(self, role_name='test_role'):
@@ -200,7 +194,6 @@ class HelperMethods:
 
             return models.PlayerRole.objects.create(
                 role_name=role_name,
-                user=self.staff_user,
             )
 
     def create_player(self, player_name='test player'):
@@ -225,7 +218,6 @@ class HelperMethods:
                 role=role,
                 total_appearances=100,
                 career_start='1995-01-01',
-                user=self.staff_user,
             )
 
     def create_season(self, season_name='test season'):
@@ -237,7 +229,6 @@ class HelperMethods:
                 start_date='2022-01-01',
                 end_date='2023-01-01',
                 number_of_leagues=10,
-                user=self.staff_user,
             )
 
     def create_league(self, league_name='test'):
@@ -256,7 +247,6 @@ class HelperMethods:
                 league_name=league_name,
                 nation=nation,
                 season=season,
-                user=self.staff_user,
             )
 
     def create_team(self, team_name='test'):
@@ -281,7 +271,6 @@ class HelperMethods:
                 league=league,
                 stadium=stadium,
                 manager=manager,
-                user=self.staff_user,
             )
             manager.team = team
 
@@ -309,7 +298,6 @@ class HelperMethods:
                 team=team,
                 points=points,
                 position=position,
-                user=self.staff_user,
             )
 
     def create_matchstatus(self, status_name='test_status'):
@@ -318,7 +306,6 @@ class HelperMethods:
 
             return models.MatchStatus.objects.create(
                 status_name=status_name,
-                user=self.staff_user,
             )
 
     def create_fixture(
@@ -355,7 +342,6 @@ class HelperMethods:
                 away_team = models.Team.objects.get(team_name=away_team)
             except ObjectDoesNotExist:
                 away_team = self.create_team(away_team)
-            # pdb.set_trace()
 
             return models.Fixture.objects.create(
                 season=season,
@@ -369,7 +355,6 @@ class HelperMethods:
                 date=date,
                 time=time,
                 match_status=match_status,
-                user=self.staff_user,
             )
 
     def create_match(self, home_team='team3', away_team='team4', fixture=None):
@@ -379,7 +364,6 @@ class HelperMethods:
 
                 return models.Match.objects.create(
                     fixture=fixture,
-                    user=self.staff_user,
                 )
             else:
                 fixture = self.create_fixture(
@@ -389,7 +373,6 @@ class HelperMethods:
 
             return models.Match.objects.create(
                 fixture=fixture,
-                user=self.staff_user,
             )
 
     def create_eventtype(self, event_name='test_event'):
@@ -398,7 +381,6 @@ class HelperMethods:
 
             return models.EventType.objects.create(
                 event_name=event_name,
-                user=self.staff_user,
             )
 
     def create_pitchposition(self, pitch_area_name='test_area'):
@@ -411,13 +393,11 @@ class HelperMethods:
 
                 return models.PitchLocation.objects.create(
                     pitch_area_name=pitch_area_name,
-                    user=self.staff_user,
                 )
             obj_count = models.PitchLocation.objects.count()
 
             return models.PitchLocation.objects.create(
                 pitch_area_name=pitch_area_name+str(obj_count),
-                user=self.staff_user,
             )
 
     def create_matchevent(
@@ -430,7 +410,6 @@ class HelperMethods:
             event_exists = models.EventType.objects.filter(
                 event_name=event_name,
             ).exists()
-            # pdb.set_trace()
             if event_exists:
                 event_type = models.EventType.objects.get(event_name=event_name)
             else:
@@ -466,5 +445,4 @@ class HelperMethods:
                 second=second,
                 pitch_area=pitch_area,
                 associated_player=associated_player,
-                user=self.staff_user,
             )

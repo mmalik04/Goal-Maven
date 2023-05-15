@@ -8,7 +8,6 @@ from django.contrib.auth.models import BaseUserManager
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
-from django.db import models
 
 
 import inspect
@@ -123,7 +122,6 @@ class UserManager(BaseUserManager):
 
     def validate_date_of_birth(self, date_of_birth):
         """Validate date_of_birth is not in the future or less than 5 years old."""
-        # date_of_birth_str = datetime.strptime(str(date_of_birth), '%Y-%m-%d')
         if date_of_birth > datetime.now().date():
             raise ValidationError(_(
                 'Date of birth cannot be in the future.'
@@ -132,15 +130,3 @@ class UserManager(BaseUserManager):
             raise ValidationError(_(
                 'You have be 5 years or older to use this api.'
             ))
-
-
-class SuperuserOnlyManager(models.Manager):
-    """Common manager to ensure only staff can create an object."""
-    # if not user.is_superuser:
-    #     raise ValueError("Permission Denied")
-    def create(self, user=None, *args, **kwargs):
-        if not user:
-            return super().create(*args, **kwargs)
-        if user.is_staff:
-            return super().create(*args, **kwargs)
-        raise ValueError("Permission Denied")
