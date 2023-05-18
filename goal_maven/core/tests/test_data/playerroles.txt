@@ -1,0 +1,12 @@
+goal_keeper|GK
+center_back|CB
+right_back|RB
+left_back|LB
+central_midfielder|CM
+central_defensive_midfielder|CDM
+central_attacking_midfielder|CAM
+left_winger|LW
+right_winger|RW
+center_forward|CF
+right_forward|RF
+left_forward|LF

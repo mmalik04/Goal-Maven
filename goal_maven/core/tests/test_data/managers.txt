@@ -1,0 +1,98 @@
+Jürgen Klopp|Germany|55
+Pep Guardiola|Spain|52
+Thomas Frank|Denmark|49
+Mikel Arteta|Spain|41
+David Moyes|Scotland|60
+Marco Silva|Portugal|45
+Steve Cooper|Wales|43
+Eddie Howe|United Kingdom|45
+Erik ten Hag|Netherlands|53
+Roberto De Zerbi|Italy|43
+Unai Emery|Spain|51
+Julen Lopetegui|Spain|56
+Gary O'Neil|United Kingdom|40
+Sean Dyche|United Kingdom|51
+Rubén Sellés|Spain|39
+Roy Hodgson|United Kingdom|75
+Frank Lampard|United Kingdom|44
+Dean Smith|United Kingdom|52
+Ryan Mason|United Kingdom|31
+Sam Allardyce|United Kingdom|68
+Diego Simeone|Argentina|53
+Jagoba Arrasate|Spain|45
+Imanol Alguacil|Spain|51
+Manuel Pellegrini|Chile|69
+Andoni Iraola|Spain|40
+Rubi|Spain|53
+Carlo Ancelotti|Italy|63
+Míchel|Spain|47
+Xavi|Spain|43
+Sergio|Spain|46
+Javier Aguirre|Mexico|64
+Ernesto Valverde|Spain|59
+Quique Setién|Spain|64
+Carlos Carvalhal|Portugal|57
+Rubén Baraja|Spain|47
+Sebastián Beccacece|Argentina|42
+José Luis Mendilibar|Spain|62
+Paulo Pezzolano|Uruguay|40
+Luis García|Spain|42
+Pepe Bordalás|Spain|59
+Christian Streich|Germany|57
+Urs Fischer|Switzerland|57
+Bo Svensson|Denmark|43
+Steffen Baumgart|Germany|51
+Oliver Glasner|Austria|48
+Ole Werner|Germany|35
+Enrico Maaßen|Germany|39
+Edin Terzic|Germany|40
+Daniel Farke|Germany|46
+Niko Kovac|Croatia|51
+Marco Rose|Germany|46
+Thomas Letsch|Germany|54
+Xabi Alonso|Spain|41
+Thomas Reis|Germany|49
+Pellegrino Matarazzo|United States|45
+Thomas Tuchel|Germany|49
+Sebastian Hoeneß|Germany|41
+Pál Dárdai|Hungary|47
+Olivier Pantaloni|France|56
+Pascal Gastien|France|59
+Franck Haise|France|52
+Bruno Génésio|France|56
+Philippe Montanier|France|58
+Philippe Clement|Belgium|49
+Régis Le Bris|France|47
+Paulo Fonseca|Portugal|50
+Igor Tudor|Croatia|45
+Christophe Galtier|France|56
+Laurent Blanc|France|57
+Will Still|Belgium|30
+Christophe Pélissier|France|57
+Patrick Kisnorbo|Australia|42
+Éric Roy|France|55
+Didier Digard|France|36
+Michel Der Zakarian|Armenia|60
+Frédéric Antonetti|France|61
+Alexandre Dujeux|France|47
+Pierre Aristouy|France|43
+Gian Piero Gasperini|Italy|65
+Stefano Pioli|Italy|57
+Massimiliano Allegri|Italy|55
+Simone Inzaghi|Italy|47
+Maurizio Sarri|Italy|64
+Marco Baroni|Italy|59
+Luciano Spalletti|Italy|64
+José Mourinho|Portugal|60
+Vincenzo Italiano|Italy|45
+Ivan Juric|Croatia|47
+Alessio Dionisi|Italy|43
+Paolo Zanetti|Italy|40
+Andrea Sottil|Italy|49
+Thiago Motta|Italy|40
+Raffaele Palladino|Italy|39
+Dejan Stanković|Serbia|44
+Marco Zaffaroni|Italy|54
+Davide Ballardini|Italy|59
+Paulo Sousa|Portugal|52
+Leonardo Semplici|Italy|55

@@ -188,12 +188,13 @@ class HelperMethods:
                 career_start='1995-01-01',
             )
 
-    def create_playerrole(self, role_name='test_role'):
+    def create_playerrole(self, role_name='test_role', role_key='TT'):
         """Method to create a player role."""
         with transaction.atomic():
 
             return models.PlayerRole.objects.create(
                 role_name=role_name,
+                role_key=role_key,
             )
 
     def create_player(self, player_name='test player'):

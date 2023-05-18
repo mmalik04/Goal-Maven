@@ -48,7 +48,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
         return self.serializer_class
 
     def validate_staff(self, request):
-        """Validates if user is staff to make post request."""
+        """Validates if user is staff to make modification request."""
         if not request.user.is_staff:
             raise PermissionDenied(
                 _("You don't have permission to perform this action.")

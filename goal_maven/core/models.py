@@ -145,11 +145,12 @@ class Player(models.Model):
 class PlayerRole(models.Model):
     role_id = models.AutoField(primary_key=True)
     role_name = models.CharField(max_length=50, blank=False, unique=True)
+    role_key = models.CharField(max_length=3, blank=False, unique=True)
 
     # objects = SuperuserOnlyManager()
 
     def __str__(self):
-        return self.role_name
+        return self.role_key
 
 
 class Referee(models.Model):

@@ -125,7 +125,7 @@ class ManagerAdmin(admin.ModelAdmin):
 class PlayerAdmin(admin.ModelAdmin):
     """Define the admin pages for Players."""
     ordering = ['player_id']
-    list_display = ['player_name', 'team', 'jersy_number']
+    list_display = ['player_name', 'role', 'team', 'jersy_number']
     fieldsets = (
         (_('Details'), {'fields': (
             'player_name', 'jersy_number', 'team', 'date_of_birth',
@@ -138,7 +138,7 @@ class PlayerAdmin(admin.ModelAdmin):
 class PlayerRoleAdmin(admin.ModelAdmin):
     """Define the admin pages for PlayerRoles."""
     ordering = ['role_id']
-    list_display = ['role_name']
+    list_display = ['role_name', 'role_key']
     fieldsets = (
         (_('Details'), {'fields': ('role_name',)}),
     )

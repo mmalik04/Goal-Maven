@@ -160,7 +160,7 @@ class PrivatePlayerApiTests(TestCase):
             player_name='Lionel Messi',
         )
         nation = self.helper.create_nation(nation_name='Portugal')
-        role = self.helper.create_playerrole(role_name='Striker')
+        role = self.helper.create_playerrole(role_name='Striker', role_key='CF')
         team = self.helper.create_team(team_name='Real Madrid')
         payload = {
             'player_name': 'Cristiano Ronaldo',
@@ -198,7 +198,7 @@ class PrivatePlayerApiTests(TestCase):
             player_name=player_name,
         )
         nation = self.helper.create_nation(nation_name='Portugal')
-        role = self.helper.create_playerrole(role_name='Striker')
+        role = self.helper.create_playerrole(role_name='Striker', role_key='CF')
         team = self.helper.create_team(team_name='Real Madrid')
         payload = {
             'player_name': 'Cristiano Ronaldo',

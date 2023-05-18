@@ -1,0 +1,71 @@
+Camp Nou|Barcelona|99354
+Wembley Stadium|London|90000
+Signal Iduna Park|Dortmund|81359
+Estadio Santiago Bernabeu|Madrid|81044
+Luzhniki Stadium|Moscow|81006
+San Siro|Milan|80018
+Stade de France|Paris|80000
+Ataturk Olimpiyat Stadium|Istanbul|76092
+Old Trafford|Manchester|75811
+Allianz Arena|Munich|75000
+Olympiastadion|Berlin|74648
+Millennium Stadium|Cardiff|74500
+Stadio Olimpico|Rome|72698
+NSC Olimpiyskiy|Kiev|70050
+OAKA Stadium|Athens|69918
+Baku Olympic Stadium|Baku|68700
+Wanda Metropolitano|Madrid|68000
+Saint Petersburg Stadium|St. Petersburg|68000
+Puskas Arena|Budapest|67155
+Stade Velodrome|Marseille|67000
+Estadio da Luz|Lisbon|64400
+Tottenham Hotspur Stadium|London|62303
+VELTINS-Arena|Gelsenkirchen|61637
+Estadio Benito Villamarin|Seville|60720
+Celtic Park|Glasgow|60500
+Mercedes-Benz-Arena|Stuttgart|60441
+Emirates Stadium|London|60361
+Stadio San Paolo|Naples|60240
+Estadio La Cartuja de Sevilla|Seville|60000
+London Stadium|London|60000
+Parc Olympique Lyonnais|Lyon|59186
+Stadio San Nicola|Bari|58270
+PGE Narodowy|Warsaw|58145
+Volksparkstadion|Hamburg|57000
+Arena Nationala|Bucharest|55634
+Estadio de Mestalla|Valencia|55000
+Etihad Stadium|Manchester|55000
+ESPRIT arena|Dusseldorf|54600
+Stadion Slaski|Chorzow|54378
+Boris Paichadze Dinamo Arena|Tblisi|54139
+Anfield|Liverpool|54074
+Borussia-Park|Monchengladbach|54010
+Hrazdan Stadium|Yerevan|53849
+Amsterdam ArenA|Amsterdam|53748
+Estadio San Mames|Bilbao|53000
+Stadion Rajko Mitic|Belgrade|53000
+Turk Telekom Arena|Istanbul|52650
+St. James Park|Newcastle|52339
+Donbass Arena|Donetsk|52187
+Hampden Park|Glasgow|52000
+Commerzbank-Arena|Frankfurt|51500
+Izmir Ataturk Stadium|Izmir|51295
+De Kuip|Rotterdam|51177
+Ibrox Stadium|Glasgow|51082
+Ernst Happel Stadion|Vienna|50865
+Sukru Saracoglu Stadium|Istanbul|50530
+Estadio do Dragao|Porto|50431
+Stade Roi Baudouin|Brussels|50093
+Estadio Jose Alvalade|Lisbon|50049
+Aviva Stadium|Dublin|50000
+Friends Arena|Stockholm|50000
+Stadion Nurnberg|Nuremberg|50000
+RheinEnergieStadion|Cologne|50000
+Stade Pierre Mauroy|Lille|50000
+Fritz-Walter-Stadion|Kaiserslautern|49780
+Stadium of Light|Sunderland|49000
+HDI Arena|Hanover|49000
+Parc des Princes|Paris|48527
+Fisht Olympic Stadium|Sochi|47659
+Otkritie Arena|Moscow|45360
+Kazan Arena|Kazan|45000
