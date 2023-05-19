@@ -23,7 +23,9 @@ class Command(BaseCommand):
         self.referees()
         self.playerroles()
         self.players()
-        # self.delete_all('Nation')
+        self.seasons()
+        self.leagues()
+        # self.delete_all('League')
         self.stdout.write(self.style.SUCCESS('All done.'))
 
     def continents(self):
@@ -266,6 +268,110 @@ class Command(BaseCommand):
                     )
         self.stdout.write(self.style.SUCCESS('Players have been populated.'))
 
+    def seasons(self):
+        self.stdout.write('Populating Seasons')
+        with open(r'/Goal-Maven/goal_maven/core/tests/test_data/seasons.txt') as f:
+            lines = f.readlines()
+        for item in lines:
+            data = item.split('|')
+            season_name = data[0].strip()
+            season_exist = models.Season.objects.filter(
+                season_name=season_name,
+            ).exists()
+            if not season_exist:
+                start_date = datetime.strptime(data[1].strip(), '%Y-%m-%d')
+                end_date = datetime.strptime(data[2].strip(), '%Y-%m-%d')
+                is_concluded = data[3].strip().lower() == 'true'
+                number_of_leagues = int(data[4].strip())
+                number_of_matches = int(data[5].strip())
+                goals_scored = int(data[6].strip())
+                avg_goals_per_match = float(data[7].strip())
+                models.Season.objects.create(
+                    season_name=season_name,
+                    start_date=start_date,
+                    end_date=end_date,
+                    is_concluded=is_concluded,
+                    number_of_leagues=number_of_leagues,
+                    number_of_matches=number_of_matches,
+                    goals_scored=goals_scored,
+                    avg_goals_per_match=avg_goals_per_match,
+                )
+        self.stdout.write(self.style.SUCCESS('Seasons have been populated.'))
+
+    def leagues(self):
+        self.stdout.write('Populating Leagues')
+        with open(r'/Goal-Maven/goal_maven/core/tests/test_data/leagues.txt') as f:
+            lines = f.readlines()
+        for item in lines:
+            data = item.split('|')
+            league_name = data[0].strip()
+            season_name = data[2].strip()
+            season = models.Season.objects.get(
+                season_name=season_name,
+            )
+            league_exist = models.League.objects.filter(
+                league_name=league_name,
+                season=season,
+            ).exists()
+            if not league_exist:
+                nation_exist = models.Nation.objects.filter(
+                    nation_name=data[1].strip(),
+                ).exists()
+                if nation_exist:
+                    nation = models.Nation.objects.get(
+                        nation_name=data[1].strip(),
+                    )
+                    season = models.Season.objects.get(
+                        season_name=season_name,
+                    )
+                    if data[5].strip().lower() == "none":
+                        top_scorer = None
+                    else:
+                        top_scorer = models.Player.objects.get(
+                            player_name=data[5].strip(),
+                        )
+                    if data[6].strip().lower() == "none":
+                        most_assists = None
+                    else:
+                        most_assists = models.Player.objects.get(
+                            player_name=data[6].strip(),
+                        )
+                    total_teams = data[3].strip()
+                    match_day = data[4].strip()
+                    is_concluded = data[7].strip().lower() == 'true'
+                    champion_team_exist = models.Team.objects.filter(
+                        team_name=data[8].strip(),
+                    ).exists()
+                    if champion_team_exist:
+                        champion_team = models.Team.objects.get(
+                            team_name=data[8].strip(),
+                        )
+                    else:
+                        champion_team = None
+                    runner_up_team_exist = models.Team.objects.filter(
+                        team_name=data[9].strip(),
+                    ).exists()
+                    if runner_up_team_exist:
+                        champion_team = models.Team.objects.get(
+                            team_name=data[9].strip(),
+                        )
+                    else:
+                        runner_up_team = None
+
+                    models.League.objects.create(
+                        league_name=league_name,
+                        nation=nation,
+                        season=season,
+                        total_teams=total_teams,
+                        match_day=match_day,
+                        top_scorer=top_scorer,
+                        most_assists=most_assists,
+                        is_concluded=is_concluded,
+                        champion_team=champion_team,
+                        runner_up_team=runner_up_team,
+                    )
+        self.stdout.write(self.style.SUCCESS('Leagues have been populated.'))
+
     def helper_random_date(self, start, end, prop):
         time_format = '%Y-%m-%d'
         stime = time.mktime(time.strptime(start, time_format))
@@ -281,6 +387,4 @@ class Command(BaseCommand):
     def delete_all(self, model_to_del=None):
         self.stdout.write(f'Deleting all {model_to_del} objects.')
         if model_to_del:
-            if model_to_del == 'Nation':
-                models.Nation.objects.all().delete()
-                self.stdout.write(f'{model_to_del} objects deleted.')
+            exec(f'models.{model_to_del}.objects.all().delete()')

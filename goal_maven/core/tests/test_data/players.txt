@@ -1,66 +1,74 @@
-1|Thibaut Courtois|GK|Real Madrid|Belgium
-13|Andriy Lunin|GK|Real Madrid|Ukraine
-26|Luis Lopez|GK|Real Madrid|Spain
-30|Lucas Canizares|GK|Real Madrid|Spain
-38|Diego Pineiro|GK|Real Madrid|Spain
-43|Mario de Luis|GK|Real Madrid|Spain
-2|Daniel Carvajal|RB|Real Madrid|Spain
-3|Eder Militao|CB|Real Madrid|Brazil
-4|David Alaba|CB|Real Madrid|Austria
-5|Jesus Vallejo|CB|Real Madrid|Spain
-6|Nacho Fernandez|RB|Real Madrid|Spain
-12|Eduardo Camavinga|LB|Real Madrid|France
-16|Alvaro Odriozola|LB|Real Madrid|Spain
-17|Lucas Vazquez|LB|Real Madrid|Spain
-22|Antonio Rudiger|CB|Real Madrid|Germany
-23|Ferland Mendy|CB|Real Madrid|France
-37|Vinicius Augusto|CB|Real Madrid|Brazil
-41|Marvel|CB|Real Madrid|Spain
-41|Rafa Marin|CB|Real Madrid|Spain
-8|Toni Kroos|CM|Real Madrid|Germany
-10|Luka Modric|CM|Real Madrid|Croatia
-15|Federico Valverde|CM|Real Madrid|Uruguay
-18|Aurelien Tchouameni|CDM|Real Madrid|France
-19|Dani Ceballos|CM|Real Madrid|Spain
-31|Mario Martin|CM|Real Madrid|Spain
-32|Carlos Dotor|CM|Real Madrid|Spain
-33|Sergio Arribas|CM|Real Madrid|Spain
-40|Nico Paz|CM|Real Madrid|Argentina
-44|Peter|CM|Real Madrid|Spain
-7|Eden Hazard|LW|Real Madrid|Belgium
-9|Karim Benzema|CF|Real Madrid|France
-11|Marco Asensio|RW|Real Madrid|Spain
-20|Vinicius Junior|LW|Real Madrid|Brazil
-21|Rodrygo|CF|Real Madrid|Brazil
-24|Mariano|CF|Real Madrid|Dominican Republic
-39|Alvaro Rodriguez|CF|Real Madrid|Uruguay
-1|Marc-Andre ter Stegen|GK|Barcelona|Germany
-13|Ignacio Pena|GK|Barcelona|Spain
-31|Ander Astralaga|GK|Barcelona|Spain
-36|Arnau Tenas|GK|Barcelona|Spain
-4|Ronald Araujo|RB|Barcelona|Uruguay
-15|Andreas Christensen|CB|Barcelona|Denmark
-17|Marcos Alonso|CB|Barcelona|Spain
-18|Jordi Alba|LB|Barcelona|Spain
-20|Sergi Roberto|RB|Barcelona|Spain
-23|Jules Kounde|RB|Barcelona|France
-24|Eric Garcia|CB|Barcelona|Spain
-28|Alex Balde|CB|Barcelona|Spain
-35|Chadi Riad|CB|Barcelona|Morocco
-5|Sergi Busquets|CDM|Barcelona|Spain
-8|Pedri|CM|Barcelona|Spain
-19|Franck Kessie|CM|Barcelona|Ivory Coast
-21|Frenkie De Jong|CAM|Barcelona|Netherlands
-29|Marc Casado|CM|Barcelona|Spain
-32|Pablo Torre|CM|Barcelona|Spain
-38|Angel Alarcon|CM|Barcelona|Spain
-40|Aleix Garrido|CM|Barcelona|Spain
-7|Ousmane Dembele|RW|Barcelona|France
-9|Robert Lewandowski|CF|Barcelona|Poland
-10|Anssumane Fati|LW|Barcelona|Spain
-11|Ferran Torres|CF|Barcelona|Spain
-22|Raphinha|CF|Barcelona|Brazil
-27|Ilias Akhomach|CF|Barcelona|Spain
-30|Gavi|CAM|Barcelona|Spain
-39|Estanis Pedrola|CM|Barcelona|Spain
-41|Lamine Yamal|CF|Barcelona|Spain
+1|Thibaut Courtois|GK|Real Madrid CF|Belgium
+13|Andriy Lunin|GK|Real Madrid CF|Ukraine
+26|Luis Lopez|GK|Real Madrid CF|Spain
+30|Lucas Canizares|GK|Real Madrid CF|Spain
+38|Diego Pineiro|GK|Real Madrid CF|Spain
+43|Mario de Luis|GK|Real Madrid CF|Spain
+2|Daniel Carvajal|RB|Real Madrid CF|Spain
+3|Eder Militao|CB|Real Madrid CF|Brazil
+4|David Alaba|CB|Real Madrid CF|Austria
+5|Jesus Vallejo|CB|Real Madrid CF|Spain
+6|Nacho Fernandez|RB|Real Madrid CF|Spain
+12|Eduardo Camavinga|LB|Real Madrid CF|France
+16|Alvaro Odriozola|LB|Real Madrid CF|Spain
+17|Lucas Vazquez|LB|Real Madrid CF|Spain
+22|Antonio Rudiger|CB|Real Madrid CF|Germany
+23|Ferland Mendy|CB|Real Madrid CF|France
+37|Vinicius Augusto|CB|Real Madrid CF|Brazil
+41|Marvel|CB|Real Madrid CF|Spain
+41|Rafa Marin|CB|Real Madrid CF|Spain
+8|Toni Kroos|CM|Real Madrid CF|Germany
+10|Luka Modric|CM|Real Madrid CF|Croatia
+15|Federico Valverde|CM|Real Madrid CF|Uruguay
+18|Aurelien Tchouameni|CDM|Real Madrid CF|France
+19|Dani Ceballos|CM|Real Madrid CF|Spain
+31|Mario Martin|CM|Real Madrid CF|Spain
+32|Carlos Dotor|CM|Real Madrid CF|Spain
+33|Sergio Arribas|CM|Real Madrid CF|Spain
+40|Nico Paz|CM|Real Madrid CF|Argentina
+44|Peter|CM|Real Madrid CF|Spain
+7|Eden Hazard|LW|Real Madrid CF|Belgium
+9|Karim Benzema|CF|Real Madrid CF|France
+11|Marco Asensio|RW|Real Madrid CF|Spain
+20|Vinicius Junior|LW|Real Madrid CF|Brazil
+21|Rodrygo|CF|Real Madrid CF|Brazil
+24|Mariano|CF|Real Madrid CF|Dominican Republic
+39|Alvaro Rodriguez|CF|Real Madrid CF|Uruguay
+1|Marc-Andre ter Stegen|GK|FC Barcelona|Germany
+13|Ignacio Pena|GK|FC Barcelona|Spain
+31|Ander Astralaga|GK|FC Barcelona|Spain
+36|Arnau Tenas|GK|FC Barcelona|Spain
+4|Ronald Araujo|RB|FC Barcelona|Uruguay
+15|Andreas Christensen|CB|FC Barcelona|Denmark
+17|Marcos Alonso|CB|FC Barcelona|Spain
+18|Jordi Alba|LB|FC Barcelona|Spain
+20|Sergi Roberto|RB|FC Barcelona|Spain
+23|Jules Kounde|RB|FC Barcelona|France
+24|Eric Garcia|CB|FC Barcelona|Spain
+28|Alex Balde|CB|FC Barcelona|Spain
+35|Chadi Riad|CB|FC Barcelona|Morocco
+5|Sergi Busquets|CDM|FC Barcelona|Spain
+8|Pedri|CM|FC Barcelona|Spain
+19|Franck Kessie|CM|FC Barcelona|Ivory Coast
+21|Frenkie De Jong|CAM|FC Barcelona|Netherlands
+29|Marc Casado|CM|FC Barcelona|Spain
+32|Pablo Torre|CM|FC Barcelona|Spain
+38|Angel Alarcon|CM|FC Barcelona|Spain
+40|Aleix Garrido|CM|FC Barcelona|Spain
+7|Ousmane Dembele|RW|FC Barcelona|France
+9|Robert Lewandowski|CF|FC Barcelona|Poland
+10|Anssumane Fati|LW|FC Barcelona|Spain
+11|Ferran Torres|CF|FC Barcelona|Spain
+22|Raphinha|CF|FC Barcelona|Brazil
+27|Ilias Akhomach|CF|FC Barcelona|Spain
+30|Gavi|CAM|FC Barcelona|Spain
+39|Estanis Pedrola|CM|FC Barcelona|Spain
+41|Lamine Yamal|CF|FC Barcelona|Spain
+9|Erling Haaland|CF|Manchester City F.C|Norway
+17|Kevin De Bruyne|CAM|Manchester City F.C|Belgium
+11|Niclas Füllkrug|CF|SV Werder Bremen|Germany
+42|Jamal Musiala|CAM|FC Bayern Munich|Germany
+9|Victor Osimhen|CF|S.S.C. Napoli|Nigeria
+77|Khvicha Kvaratskhelia|CF|S.S.C. Napoli|Georgia
+91|Alexandre Lacazette|CF|Olympique Lyonnais|France
+30|Lionel Messi|CF|Paris Saint-Germain F.C|Argentina
