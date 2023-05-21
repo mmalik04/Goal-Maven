@@ -1,0 +1,13 @@
+Manchester City F.C.|1894-04-16|Premier League|Etihad Stadium|Pep Guardiola
+Manchester United F.C.|1902-04-24|Premier League|Old Trafford|Erik ten Hag
+Liverpool F.C.|1892-06-03|Premier League|Anfield|Jürgen Klopp
+Paris Saint-Germain F.C.|1970-08-12|Ligue 1|Parc des Princes|Christophe Galtier
+AS Monaco FC|1924-11-23|Ligue 1|Stade Louis-II|Philippe Clement
+FC Bayern Munich|1900-02-27|Bundesliga|Allianz Arena|Thomas Tuchel
+Borussia Dortmund|1909-12-19|Bundesliga|Signal Iduna Park|Edin Terzic
+SV Werder Bremen|1899-02-04|Bundesliga|Weserstadion|Ole Werner
+Olympique Lyonnais|1950-01-01|Ligue 1|Parc Olympique Lyonnais|Laurent Blanc
+Juventus F.C.|1897-11-01|Serie A|Juventus Stadium|Massimiliano Allegri
+S.S.C. Napoli|1926-08-25|Serie A|Stadio Diego Armando Maradona|Luciano Spalletti
+Real Madrid CF|1902-03-06|La Liga|Estadio Santiago Bernabeu|Carlo Ancelotti
+FC Barcelona|1899-11-29|La Liga|Camp Nou|Xavi

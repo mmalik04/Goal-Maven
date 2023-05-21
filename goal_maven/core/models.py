@@ -90,7 +90,9 @@ class Team(models.Model):
     team_id = models.AutoField(primary_key=True)
     team_name = models.CharField(max_length=50, blank=False, unique=True)
     est_date = models.DateField(blank=False)
-    league = models.ForeignKey('League', on_delete=models.CASCADE, blank=False)
+    league = models.ForeignKey(
+        'League', on_delete=models.SET_NULL, null=True, blank=True,
+    )
     stadium = models.ForeignKey('Stadium', on_delete=models.CASCADE, blank=False)
     manager = models.OneToOneField(
         'Manager', on_delete=models.SET_NULL, null=True, blank=True,
@@ -195,20 +197,20 @@ class League(models.Model):
     total_teams = models.SmallIntegerField(default=0)
     match_day = models.SmallIntegerField(default=0)
     top_scorer = models.ForeignKey(
-        'Player', on_delete=models.CASCADE, null=True, blank=True,
+        'Player', on_delete=models.SET_NULL, null=True, blank=True,
         related_name='top_scorer', default=None,
     )
     most_assists = models.ForeignKey(
-        'Player', on_delete=models.CASCADE, null=True, blank=True,
+        'Player', on_delete=models.SET_NULL, null=True, blank=True,
         related_name='most_assists', default=None,
     )
     is_concluded = models.BooleanField(default=False)
     champion_team = models.ForeignKey(
-        'Team', on_delete=models.CASCADE, null=True, blank=True,
+        'Team', on_delete=models.SET_NULL, null=True, blank=True,
         related_name='champion_team', default=None,
     )
     runner_up_team = models.ForeignKey(
-        'Team', on_delete=models.CASCADE, null=True, blank=True,
+        'Team', on_delete=models.SET_NULL, null=True, blank=True,
         related_name='runner_up_team', default=None,
     )
 
@@ -310,7 +312,7 @@ class MatchEvent(models.Model):
     event_type = models.ForeignKey('EventType', on_delete=models.CASCADE, blank=False)
     match = models.ForeignKey('Match', on_delete=models.CASCADE, blank=False)
     player = models.ForeignKey(
-        'Player', on_delete=models.CASCADE, blank=False, related_name='player',
+        'Player', on_delete=models.CASCADE, null=True, blank=True, related_name='player',
     )
     minute = models.SmallIntegerField(default=0)
     second = models.SmallIntegerField(default=0)

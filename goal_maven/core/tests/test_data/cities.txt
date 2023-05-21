@@ -270,3 +270,5 @@ France|Paris
 Russia|Sochi
 Russia|Moscow
 Russia|Kazan
+Germany|Bremen
+Italy|Turin

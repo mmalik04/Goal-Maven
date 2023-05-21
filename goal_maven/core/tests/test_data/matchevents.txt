@@ -1,0 +1,30 @@
+Shot On|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Raphinha|5|0|FALSE|Attacking Penalty Area|Andriy Lunin
+Shot On|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Robert Lewandowski|7|0|FALSE|Attacking Box edge|David Alaba
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Vinicius Augusto|8|0|FALSE|Attacking Penalty Area|None
+Goal|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Karim Benzema|12|0|FALSE|Attacking Penalty Area|Vinicius Augusto
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Robert Lewandowski|25|0|FALSE|Attacking Penalty Area|None
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Ousmane Dembele|27|0|FALSE|Attacking Penalty Area|None
+Yellow Card|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Vinicius Augusto|30|0|FALSE|Attacking half|None
+Shot On|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Frenkie De Jong|37|0|FALSE|Attacking Penalty Area|Andriy Lunin
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Robert Lewandowski|43|0|FALSE|Attacking Penalty Area|None
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Toni Kroos|50|0|FALSE|Attacking Box edge|None
+Offside|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Karim Benzema|52|0|FALSE|Attacking Penalty Area|None
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Ferran Torres|60|10|FALSE|None|Raphinha
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Alex Balde|60|20|FALSE|None|Jordi Alba
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Sergi Busquets|60|30|FALSE|None|Gavi
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Ousmane Dembele|73|0|FALSE|None|Anssumane Fati
+Yellow Card|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Luka Modric|75|0|FALSE|Defending half|Pedri
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Luka Modric|78|10|FALSE|None|Eduardo Camavinga
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Anssumane Fati|78|20|FALSE|Attacking Box edge|None
+Yellow Card|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Gavi|81|0|FALSE|Defending half|Aurelien Tchouameni
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Gavi|82|0|FALSE|Attacking Box edge|None
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Pedri|83|10|FALSE|None|Franck Kessie
+Goal|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Ferran Torres|83|20|FALSE|Attacking Penalty Area|Robert Lewandowski
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Vinicius Augusto|85|0|FALSE|None|Rodrygo
+Shot Off|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Anssumane Fati|87|0|FALSE|Attacking Penalty Area|None
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Daniel Carvajal|88|0|FALSE|None|Antonio Rudiger
+Substitution|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Karim Benzema|88|10|FALSE|None|Marco Asensio
+Penalty Foul|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Eric Garcia|90|0|FALSE|Defending Penalty Area|Rodrygo
+Penalty Goal|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Rodrygo|91|0|FALSE|Attacking Penalty Area|None
+Yellow Card|La Liga|Real Madrid CF|FC Barcelona|2022-2023|Franck Kessie|92|0|FALSE|Defending half|None
+Final whistle|La Liga|Real Madrid CF|FC Barcelona|2022-2023|None|95|0|FALSE|None|None

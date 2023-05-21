@@ -1,0 +1,5 @@
+Scheduled
+In-Progress
+Completed
+Postponed
+Cancelled

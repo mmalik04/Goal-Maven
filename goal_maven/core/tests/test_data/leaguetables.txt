@@ -1,0 +1,13 @@
+Premier League|2022-2023|Manchester City F.C.|85|1|35|27|4|4|92|31|61
+Premier League|2022-2023|Manchester United F.C.|66|4|35|20|6|9|51|41|10
+Premier League|2022-2023|Liverpool F.C.|65|5|36|19|8|9|70|42|28
+Bundesliga|2022-2023|FC Bayern Munich|68|1|32|20|8|4|89|34|55
+Bundesliga|2022-2023|Borussia Dortmund|67|2|32|21|4|7|78|42|36
+Bundesliga|2022-2023|SV Werder Bremen|35|12|32|10|5|17|50|62|-12
+Serie A|2022-2023|S.S.C. Napoli|83|1|35|26|5|4|70|25|45
+Serie A|2022-2023|Juventus F.C.|69|2|35|21|6|8|54|28|26
+La Liga|2022-2023|Real Madrid CF|71|2|34|22|5|7|70|32|38
+La Liga|2022-2023|FC Barcelona|85|1|34|27|4|3|64|13|51
+Ligue 1|2022-2023|Paris Saint-Germain F.C.|81|1|35|26|3|6|84|35|49
+Ligue 1|2022-2023|AS Monaco FC|65|4|36|19|8|9|69|54|15
+Ligue 1|2022-2023|Olympique Lyonnais|59|7|36|17|8|11|61|44|17

@@ -1,0 +1,11 @@
+Center Circle
+Defending Penalty Area
+Attacking Penalty Area
+Goal Line
+Touchline
+Corner Arc
+Halfway Line
+Defending half
+Attacking half
+Attacking Box edge
+Defending Box edge

@@ -1,8 +1,8 @@
 La Liga|Spain|2020-2021|20|38|Karim Benzema|Vinicius Junior|True|Real Madrid CF|FC Barcelona
 La Liga|Spain|2021-2022|20|38|Karim Benzema|Vinicius Junior|True|Real Madrid CF|FC Barcelona
 La Liga|Spain|2022-2023|20|0|None|None|False|None|None
-Premier League|United Kingdom|2020-2021|20|38|Erling Haaland|Kevin De Bruyne|True|Manchester City F.C|Liverpool F.C.
-Premier League|United Kingdom|2021-2022|20|38|Erling Haaland|Kevin De Bruyne|True|Manchester City F.C|Liverpool F.C.
+Premier League|United Kingdom|2020-2021|20|38|Erling Haaland|Kevin De Bruyne|True|Manchester City F.C.|Liverpool F.C.
+Premier League|United Kingdom|2021-2022|20|38|Erling Haaland|Kevin De Bruyne|True|Manchester City F.C.|Liverpool F.C.
 Premier League|United Kingdom|2022-2023|20|0|None|None|False|None|None
 Bundesliga|Germany|2020-2021|20|38|Niclas Füllkrug|Jamal Musiala|True|FC Bayern Munich|Borussia Dortmund
 Bundesliga|Germany|2021-2022|20|38|Niclas Füllkrug|Jamal Musiala|True|FC Bayern Munich|Borussia Dortmund
@@ -10,6 +10,6 @@ Bundesliga|Germany|2022-2023|20|0|None|None|False|None|None
 Serie A|Italy|2020-2021|20|38|Victor Osimhen|Khvicha Kvaratskhelia|True|S.S.C. Napoli|Juventus F.C.
 Serie A|Italy|2021-2022|20|38|Victor Osimhen|Khvicha Kvaratskhelia|True|S.S.C. Napoli|Juventus F.C.
 Serie A|Italy|2022-2023|20|0|None|None|False|None|None
-Ligue 1|France|2020-2021|20|38|Alexandre Lacazette|Lionel Messi|True|Paris Saint-Germain F.C.|AS Monaco
-Ligue 1|France|2021-2022|20|38|Alexandre Lacazette|Lionel Messi|True|Paris Saint-Germain F.C.|AS Monaco
+Ligue 1|France|2020-2021|20|38|Alexandre Lacazette|Lionel Messi|True|Paris Saint-Germain F.C.|AS Monaco FC
+Ligue 1|France|2021-2022|20|38|Alexandre Lacazette|Lionel Messi|True|Paris Saint-Germain F.C.|AS Monaco FC
 Ligue 1|France|2022-2023|20|0|None|None|False|None|None

@@ -1,0 +1,17 @@
+Goal
+Penalty Kick
+Corner Kick
+Free Kick
+Yellow Card
+Red Card
+Substitution
+Injury
+Offside
+Throw-in
+Injury time
+Shot On
+Shot Off
+Foul
+Penalty Goal
+Penalty Foul
+Final whistle

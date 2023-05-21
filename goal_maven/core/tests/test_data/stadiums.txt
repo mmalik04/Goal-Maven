@@ -69,3 +69,7 @@ Parc des Princes|Paris|48527
 Fisht Olympic Stadium|Sochi|47659
 Otkritie Arena|Moscow|45360
 Kazan Arena|Kazan|45000
+Stade Louis-II|Monaco|16360
+Weserstadion|Bremen|42100
+Juventus Stadium|Turin|41507
+Stadio Diego Armando Maradona|Naples|54726

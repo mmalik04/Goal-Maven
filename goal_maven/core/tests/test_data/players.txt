@@ -64,11 +64,11 @@
 30|Gavi|CAM|FC Barcelona|Spain
 39|Estanis Pedrola|CM|FC Barcelona|Spain
 41|Lamine Yamal|CF|FC Barcelona|Spain
-9|Erling Haaland|CF|Manchester City F.C|Norway
-17|Kevin De Bruyne|CAM|Manchester City F.C|Belgium
+9|Erling Haaland|CF|Manchester City F.C.|Norway
+17|Kevin De Bruyne|CAM|Manchester City F.C.|Belgium
 11|Niclas Füllkrug|CF|SV Werder Bremen|Germany
 42|Jamal Musiala|CAM|FC Bayern Munich|Germany
 9|Victor Osimhen|CF|S.S.C. Napoli|Nigeria
 77|Khvicha Kvaratskhelia|CF|S.S.C. Napoli|Georgia
 91|Alexandre Lacazette|CF|Olympique Lyonnais|France
-30|Lionel Messi|CF|Paris Saint-Germain F.C|Argentina
+30|Lionel Messi|CF|Paris Saint-Germain F.C.|Argentina
