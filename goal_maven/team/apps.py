@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ContinentConfig(AppConfig):
+class TeamConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'continent'
+    name = 'goal_maven.team'

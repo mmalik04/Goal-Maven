@@ -31,5 +31,5 @@ urlpatterns = [
     ),
     path('api/user/', include('goal_maven.user.urls')),
     path('api/player/', include('goal_maven.player.urls')),
-    path('api/continent/', include('goal_maven.continent.urls')),
+    path('api/team/', include('goal_maven.team.urls')),
 ]

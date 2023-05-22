@@ -191,11 +191,11 @@ class LeagueTableAdmin(admin.ModelAdmin):
     """Define the admin pages for LeagueTables."""
     ordering = ['table_id']
     list_display = ['position', 'team', 'points', 'matches_played', 'matches_won',
-                    'matches_drawn', 'maches_lost', 'goal_difference']
+                    'matches_drawn', 'matches_lost', 'goal_difference']
     fieldsets = (
         (_('Details'), {'fields': (
             'league', 'season', 'team', 'points', 'position',
-            'matches_played', 'matches_won', 'matches_drawn', 'maches_lost',
+            'matches_played', 'matches_won', 'matches_drawn', 'matches_lost',
             'goals_scored', 'goals_against', 'goal_difference',
         )}),
     )

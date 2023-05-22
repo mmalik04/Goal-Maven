@@ -230,7 +230,7 @@ class LeagueTable(models.Model):
     matches_played = models.SmallIntegerField(default=0)
     matches_won = models.SmallIntegerField(default=0)
     matches_drawn = models.SmallIntegerField(default=0)
-    maches_lost = models.SmallIntegerField(default=0)
+    matches_lost = models.SmallIntegerField(default=0)
     goals_scored = models.IntegerField(default=0)
     goals_against = models.IntegerField(default=0)
     goal_difference = models.SmallIntegerField(default=0)

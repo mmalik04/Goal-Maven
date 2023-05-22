@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'goal_maven.core',
     'goal_maven.user',
     'goal_maven.player',
+    'goal_maven.team',
 ]
 
 MIDDLEWARE = [
