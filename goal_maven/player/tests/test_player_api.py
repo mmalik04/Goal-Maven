@@ -14,7 +14,10 @@ from goal_maven.core.tests.helper_methods import HelperMethods
 from goal_maven.player.serializers import (
     PlayerSerializer,
     PlayerDetailSerializer,
+    PlayerStatsSerializer,
 )
+
+# from django.core.management import call_command
 
 from datetime import datetime
 from datetime import date
@@ -26,6 +29,11 @@ PLAYERS_URL = reverse('player:player-list')
 def detail_url(player_id):
     """Create and return a player detail URL."""
     return reverse('player:player-detail', args=[player_id])
+
+
+def stats_url(player_id, season_name):
+    """Create and return a player stats URL."""
+    return reverse('player:player-season-stats', args=[player_id, season_name])
 
 
 class PublicPlayerAPITests(TestCase):
@@ -246,3 +254,74 @@ class PrivatePlayerApiTests(TestCase):
             Player.objects.filter(player_id=player.player_id).exists(),
             True,
         )
+
+    def test_retrieve_season_wise_player_stats_(self):
+        """Test retrieving stats of a player for a specific season."""
+        season = self.helper.create_season(
+            season_name='2022-2023',
+        )
+        season1 = self.helper.create_season(
+            season_name='2021-2022',
+        )
+        fixture = self.helper.create_fixture(
+            season=season,
+        )
+        fixture1 = self.helper.create_fixture(
+            season=season1,
+        )
+        match = self.helper.create_match(
+            fixture=fixture,
+        )
+        match1 = self.helper.create_match(
+            fixture=fixture1,
+        )
+        player1 = self.helper.create_player(
+            player_name='testplayer1',
+        )
+        event_types = {
+            'Goal': None,
+            'Penalty Goal': None,
+            'Free Kick Goal': None,
+            'Foul': None,
+            'Penalty Foul': None,
+            'Yellow Card': None,
+            'Red Card': None,
+            'Shot On': None,
+            'Own Goal': None,
+        }
+        for event_type in event_types.keys():
+            event_types[event_type] = self.helper.create_eventtype(
+                event_name=event_type,
+            )
+            self.helper.create_matchevent(
+                match=match,
+                event_type=event_types[event_type],
+                player=player1
+            )
+            if event_type == 'Goal':
+                self.helper.create_matchevent(
+                    match=match,
+                    event_type=event_types[event_type],
+                    associated_player=player1,
+                )
+                self.helper.create_matchevent(
+                    match=match1,
+                    event_type=event_types[event_type],
+                    player=player1,
+                )
+
+        url = stats_url(player1.player_id, season.season_name)
+        res = self.normal_client.get(url)
+        serializer = PlayerStatsSerializer(
+            player1, context={'season_name': season.season_name},
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.data['goals'], 3)
+        self.assertEqual(res.data['assists'], 1)
+        self.assertEqual(res.data['fouls'], 2)
+        self.assertEqual(res.data['yellow_cards'], 1)
+        self.assertEqual(res.data['red_cards'], 1)
+        self.assertEqual(res.data['shots_on'], 1)
+        self.assertEqual(res.data['own_goals'], 1)

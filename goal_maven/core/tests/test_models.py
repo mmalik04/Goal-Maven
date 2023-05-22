@@ -520,7 +520,7 @@ class ModelTests(TestCase):
         second = 20
 
         match_event = self.helper.create_matchevent(
-            event_name=event_name,
+            event_type=event_name,
             player=player,
             associated_player=associated_player,
             minute=minute,

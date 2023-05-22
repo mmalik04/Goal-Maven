@@ -18,4 +18,9 @@ app_name = 'player'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path(
+        'stats/<int:pk>/<str:season_name>/',
+        views.PlayerStatsView.as_view(),
+        name='player-season-stats',
+    ),
 ]

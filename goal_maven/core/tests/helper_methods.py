@@ -311,14 +311,18 @@ class HelperMethods:
 
     def create_fixture(
             self, home_team='team1', away_team='team2',
-            date='2023-01-01', time='20:00:00',
+            date='2023-01-01', time='20:00:00', season='testseason'
             ):
         """Method to create a fixture."""
         with transaction.atomic():
-            if models.Season.objects.count() > 0:
-                season = models.Season.objects.first()
-            else:
-                season = self.create_season()
+            try:
+                season = models.Season.objects.get(season_name=season)
+            except ObjectDoesNotExist:
+                season = self.create_season(season)
+            # if models.Season.objects.count() > 0:
+            #     season = models.Season.objects.first()
+            # else:
+            #     season = self.create_season()
             if models.League.objects.count() > 0:
                 league = models.League.objects.first()
             else:
@@ -358,11 +362,16 @@ class HelperMethods:
                 match_status=match_status,
             )
 
-    def create_match(self, home_team='team3', away_team='team4', fixture=None):
+    def create_match(
+            self, match=None, home_team='team3', away_team='team4', fixture=None,
+            ):
         """Method to create a match."""
         with transaction.atomic():
+            if match:
+                return models.Match.objects.create(
+                    fixture=match.fixture,
+                )
             if fixture:
-
                 return models.Match.objects.create(
                     fixture=fixture,
                 )
@@ -402,20 +411,26 @@ class HelperMethods:
             )
 
     def create_matchevent(
-            self, event_name='test event', player='test_player',
+            self, event_type='test event', player='test_player',
             associated_player='test_associatedplayer', minute=10,
-            second=40,
+            second=40, match=None,
             ):
         """Method to create a match event."""
         with transaction.atomic():
             event_exists = models.EventType.objects.filter(
-                event_name=event_name,
+                event_name=event_type,
             ).exists()
             if event_exists:
-                event_type = models.EventType.objects.get(event_name=event_name)
+                event_type = models.EventType.objects.get(event_name=event_type)
             else:
-                event_type = self.create_eventtype(event_name=event_name)
-            match = self.create_match()
+                event_type = self.create_eventtype(event_name=event_type)
+            if not match:
+                match = self.create_match()
+            else:
+                try:
+                    match = models.Match.objects.get(match_id=match.match_id)
+                except ObjectDoesNotExist:
+                    match = self.create_match(match)
             player_exists = models.Player.objects.filter(
                 player_name=player,
             ).exists()

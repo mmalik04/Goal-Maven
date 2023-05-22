@@ -15,3 +15,5 @@ Foul
 Penalty Goal
 Penalty Foul
 Final whistle
+Own Goal
+Free Kick Goal

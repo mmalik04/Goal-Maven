@@ -5,8 +5,13 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from goal_maven.core.models import Player
+# from goal_maven.core import models
 from goal_maven.player import serializers
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import generics
 
 from django.utils.translation import gettext_lazy as _
 
@@ -53,3 +58,18 @@ class PlayerViewSet(viewsets.ModelViewSet):
             raise PermissionDenied(
                 _("You don't have permission to perform this action.")
             )
+
+
+class PlayerStatsView(generics.GenericAPIView):
+    """View for returning goals of a player."""
+    serializer_class = serializers.PlayerStatsSerializer
+
+    def get(self, request, *args, **kwargs):
+
+        player = get_object_or_404(Player, pk=kwargs.get('pk'))
+        serializer = self.get_serializer(
+            player,
+            context={'season_name': kwargs.get('season_name')},
+        )
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

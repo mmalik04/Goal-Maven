@@ -26,6 +26,8 @@ class Command(BaseCommand):
         self.seasons()
         self.leagues()
         self.teams()
+        self.delete_all('League')
+        self.leagues()
         self.leaguetables()
         self.matchstatuses()
         self.fixtures_matches()

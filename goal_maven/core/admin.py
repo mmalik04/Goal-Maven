@@ -220,7 +220,8 @@ class FixtureAdmin(admin.ModelAdmin):
 class MatchAdmin(admin.ModelAdmin):
     """Define the admin pages for Matches."""
     ordering = ['match_id']
-    list_display = ['fixture', 'result', 'winner_team']
+    list_display = ['fixture', 'home_team_goals', 'away_team_goals',
+                    'result', 'winner_team']
     fieldsets = (
         (_('Details'), {'fields': (
             'fixture', 'attendance',
