@@ -441,17 +441,17 @@ class ModelTests(TestCase):
 
     def test_create_leaguetable_successful(self):
         """Test creating a league table entry with staff user is successful."""
-        name = 'Real Madrid'
+        team = self.helper.create_team(team_name='Real Madrid')
         points = 90
         position = 1
         leaguetable = self.helper.create_leaguetable(
-            team_name=name,
+            team=team,
             points=points,
             position=position,
         )
 
         self.assertEqual(models.LeagueTable.objects.count(), 1)
-        self.assertEqual(leaguetable.team.team_name, name)
+        self.assertEqual(leaguetable.team.team_name, 'Real Madrid')
 
     def test_create_matchstatus_successful(self):
         """Test creating a match status with staff user is successful."""

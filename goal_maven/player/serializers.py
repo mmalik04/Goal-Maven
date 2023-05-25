@@ -32,7 +32,7 @@ class PlayerDetailSerializer(PlayerSerializer):
 
 
 class PlayerStatsSerializer(serializers.Serializer):
-    """Serializer for player goal view."""
+    """Serializer for player stats view."""
 
     season = serializers.SerializerMethodField()
     goals = serializers.SerializerMethodField()

@@ -232,17 +232,18 @@ class HelperMethods:
                 number_of_leagues=10,
             )
 
-    def create_league(self, league_name='test'):
+    def create_league(self, league_name='test', season=None):
         """Method to create a league."""
         with transaction.atomic():
             if models.Nation.objects.count() > 0:
                 nation = models.Nation.objects.first()
             else:
                 nation = self.create_nation()
-            if models.Season.objects.count() > 0:
-                season = models.Season.objects.first()
-            else:
-                season = self.create_season()
+            if not season:
+                if models.Season.objects.count() > 0:
+                    season = models.Season.objects.first()
+                else:
+                    season = self.create_season()
 
             return models.League.objects.create(
                 league_name=league_name,
@@ -277,21 +278,32 @@ class HelperMethods:
 
             return team
 
-    def create_leaguetable(self, team_name='Test Team', points=0, position=1):
+    def create_leaguetable(
+                self, team=None, points=0, position=1, season=None,
+                league=None,
+                ):
         """Method to create a league table."""
         with transaction.atomic():
-            if models.League.objects.count() > 0:
-                league = models.League.objects.first()
-            else:
-                league = self.create_league()
-            if models.Season.objects.count() > 0:
-                season = models.Season.objects.first()
-            else:
-                season = self.create_season()
-            try:
-                team = models.Team.objects.get(team_name=team_name)
-            except ObjectDoesNotExist:
-                team = self.create_team(team_name)
+            if not league:
+                if models.League.objects.count() > 0:
+                    league = models.League.objects.first()
+                else:
+                    league = self.create_league()
+            if not season:
+                if models.Season.objects.count() > 0:
+                    season = models.Season.objects.first()
+                else:
+                    season = self.create_season()
+            if not team:
+                team = self.create_team('Test Team')
+
+            position_exists = models.LeagueTable.objects.filter(
+                    position=position,
+                    league=league,
+                    season=season,
+                ).exists()
+            if position_exists:
+                position += 1
 
             return models.LeagueTable.objects.create(
                 league=league,

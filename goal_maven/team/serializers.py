@@ -30,7 +30,7 @@ class TeamDetailSerializer(TeamSerializer):
 
 
 class TeamStatsSerializer(serializers.Serializer):
-    """Serializer for Team goal view."""
+    """Serializer for Team stats view."""
 
     season = serializers.SerializerMethodField()
     points = serializers.SerializerMethodField()

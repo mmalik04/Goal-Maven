@@ -226,7 +226,9 @@ class LeagueTable(models.Model):
     season = models.ForeignKey('Season', on_delete=models.CASCADE, blank=False)
     team = models.ForeignKey('Team', on_delete=models.CASCADE, blank=False)
     points = models.SmallIntegerField(default=0)
-    position = models.SmallIntegerField(null=True, blank=True, default=None)
+    position = models.SmallIntegerField(
+        null=True, blank=True, default=None,
+    )
     matches_played = models.SmallIntegerField(default=0)
     matches_won = models.SmallIntegerField(default=0)
     matches_drawn = models.SmallIntegerField(default=0)
