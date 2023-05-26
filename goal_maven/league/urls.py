@@ -22,5 +22,5 @@ app_name = 'league'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('/<str:season_name>/', include(router.urls)),
+    path('<str:season_name>/', include(router.urls)),
 ]

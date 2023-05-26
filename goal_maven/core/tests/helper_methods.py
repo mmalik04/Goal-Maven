@@ -251,21 +251,24 @@ class HelperMethods:
                 season=season,
             )
 
-    def create_team(self, team_name='test'):
+    def create_team(self, team_name='test', stadium=None, manager=None, league=None):
         """Method to create a team."""
         with transaction.atomic():
-            if models.League.objects.count() > 0:
-                league = models.League.objects.first()
-            else:
-                league = self.create_league()
-            if models.Stadium.objects.count() > 0:
-                stadium = models.Stadium.objects.first()
-            else:
-                stadium = self.create_stadium()
-            if len(models.Team.objects.all()) <= len(models.Manager.objects.all()):
-                manager = self.create_manager(
-                    manager_name='new manager',
-                )
+            if not league:
+                if models.League.objects.count() > 0:
+                    league = models.League.objects.first()
+                else:
+                    league = self.create_league()
+            if not stadium:
+                if models.Stadium.objects.count() > 0:
+                    stadium = models.Stadium.objects.first()
+                else:
+                    stadium = self.create_stadium()
+            if not manager:
+                if len(models.Team.objects.all()) <= len(models.Manager.objects.all()):
+                    manager = self.create_manager(
+                        manager_name='new manager',
+                    )
 
             team = models.Team.objects.create(
                 team_name=team_name,
@@ -323,7 +326,7 @@ class HelperMethods:
 
     def create_fixture(
             self, home_team='team1', away_team='team2',
-            date='2023-01-01', time='20:00:00', season='testseason'
+            date='2023-01-01', time='20:00:00', season='testseason', league=None,
             ):
         """Method to create a fixture."""
         with transaction.atomic():
@@ -331,14 +334,11 @@ class HelperMethods:
                 season = models.Season.objects.get(season_name=season)
             except ObjectDoesNotExist:
                 season = self.create_season(season)
-            # if models.Season.objects.count() > 0:
-            #     season = models.Season.objects.first()
-            # else:
-            #     season = self.create_season()
-            if models.League.objects.count() > 0:
-                league = models.League.objects.first()
-            else:
-                league = self.create_league()
+            if not league:
+                if models.League.objects.count() > 0:
+                    league = models.League.objects.first()
+                else:
+                    league = self.create_league()
             if models.Stadium.objects.count() > 0:
                 stadium = models.Stadium.objects.first()
             else:

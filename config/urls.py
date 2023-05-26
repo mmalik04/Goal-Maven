@@ -33,5 +33,6 @@ urlpatterns = [
     path('api/player/', include('goal_maven.player.urls')),
     path('api/team/', include('goal_maven.team.urls')),
     path('api/league/', include('goal_maven.league.urls', namespace='default')),
+    path('api/fixture/', include('goal_maven.fixture.urls')),
     # path('api/season/', include('goal_maven.league.urls')),
 ]

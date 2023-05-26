@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'goal_maven.player',
     'goal_maven.team',
     'goal_maven.league',
+    'goal_maven.fixture',
 ]
 
 MIDDLEWARE = [
