@@ -222,19 +222,76 @@ class PrivateTeamApiTests(TestCase):
 
     def test_retrieve_season_wise_team_stats_(self):
         """Test retrieving stats of a team for a specific season."""
-        season = self.helper.create_season(
-            season_name='2022-2023',
+        season = self.helper.create_season(season_name='2022-2023')
+        season1 = self.helper.create_season(season_name='2021-2022')
+
+        league = self.helper.create_league(league_name='my league')
+        team = self.helper.create_team(team_name='my team')
+        team2 = self.helper.create_team(team_name='my team2')
+        player1 = self.helper.create_player(
+            player_name='my player1',
+            team=team,
         )
-        season1 = self.helper.create_season(
-            season_name='2021-2022',
+        player2 = self.helper.create_player(
+            player_name='my player2',
+            team=team,
         )
 
-        league = self.helper.create_league(
-            league_name='my league',
+        goal_type = self.helper.create_eventtype(
+            event_name='Goal',
         )
-        team = self.helper.create_team(
-            team_name='my team',
+        penalty_goal_type = self.helper.create_eventtype(
+            event_name='Penalty Goal',
         )
+        self.helper.create_eventtype(
+            event_name='Free Kick Goal',
+        )
+        yellow_card_type = self.helper.create_eventtype(
+            event_name='Yellow Card',
+        )
+        red_card_type = self.helper.create_eventtype(
+            event_name='Red Card',
+        )
+        fixture = self.helper.create_fixture(
+            home_team=team,
+            away_team=team2,
+            season=season,
+            league=league,
+        )
+        match = self.helper.create_match(fixture=fixture)
+        self.helper.create_matchevent(
+            match=match,
+            player=player1,
+            event_type=penalty_goal_type,
+            minute=10,
+        )
+        self.helper.create_matchevent(
+            match=match,
+            player=player1,
+            event_type=goal_type,
+            associated_player=player2,
+            minute=20,
+        )
+        self.helper.create_matchevent(
+            match=match,
+            player=player1,
+            event_type=goal_type,
+            associated_player=player2,
+            minute=30,
+        )
+        self.helper.create_matchevent(
+            match=match,
+            player=player1,
+            event_type=yellow_card_type,
+            minute=40,
+        )
+        self.helper.create_matchevent(
+            match=match,
+            player=player1,
+            event_type=red_card_type,
+            minute=50,
+        )
+
         season_list = {'season': (season, 80), 'season1': (season1, 70)}
         for k, v in season_list.items():
             models.LeagueTable.objects.create(
@@ -269,3 +326,23 @@ class PrivateTeamApiTests(TestCase):
         self.assertEqual(res.data['goals_scored'], 90)
         self.assertEqual(res.data['goals_against'], 20)
         self.assertEqual(res.data['goal_difference'], 70)
+        self.assertEqual(
+            res.data['most_goals']['player__player_name'],
+            player1.player_name,
+        )
+        self.assertEqual(res.data['most_goals']['total_goals'], 3)
+        self.assertEqual(
+            res.data['most_assists']['associated_player__player_name'],
+            player2.player_name,
+        )
+        self.assertEqual(res.data['most_assists']['total_assists'], 2)
+        self.assertEqual(
+            res.data['most_yellow_cards']['player__player_name'],
+            player1.player_name,
+        )
+        self.assertEqual(res.data['most_yellow_cards']['total_yellow_cards'], 1)
+        self.assertEqual(
+            res.data['most_red_cards']['player__player_name'],
+            player1.player_name,
+        )
+        self.assertEqual(res.data['most_red_cards']['total_red_cards'], 1)

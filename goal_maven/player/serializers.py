@@ -48,6 +48,7 @@ class PlayerStatsSerializer(serializers.Serializer):
         return self.context.get('season_name')
 
     def get_goals(self, player) -> int:
+        """Get goals for a player in a season."""
         goals = models.MatchEvent.objects.filter(
             player=player,
             match__fixture__season__season_name=self.get_season(player),
@@ -57,6 +58,7 @@ class PlayerStatsSerializer(serializers.Serializer):
         return goals.count()
 
     def get_assists(self, player) -> int:
+        """Get assists for a player in a season."""
         assists = models.MatchEvent.objects.filter(
             associated_player=player,
             event_type__event_name='Goal',
@@ -65,6 +67,7 @@ class PlayerStatsSerializer(serializers.Serializer):
         return assists.count()
 
     def get_fouls(self, player) -> int:
+        """Get fouls for a player in a season."""
         fouls = models.MatchEvent.objects.filter(
             player=player,
             event_type__event_name__in=['Foul', 'Penalty Foul'],
@@ -73,6 +76,7 @@ class PlayerStatsSerializer(serializers.Serializer):
         return fouls.count()
 
     def get_yellow_cards(self, player) -> int:
+        """Get yellow cards for a player in a season."""
         yellow_cards = models.MatchEvent.objects.filter(
             player=player,
             event_type__event_name='Yellow Card',
@@ -81,6 +85,7 @@ class PlayerStatsSerializer(serializers.Serializer):
         return yellow_cards.count()
 
     def get_red_cards(self, player) -> int:
+        """Get red cards for a player in a season."""
         red_cards = models.MatchEvent.objects.filter(
             player=player,
             event_type__event_name='Red Card',
@@ -89,6 +94,7 @@ class PlayerStatsSerializer(serializers.Serializer):
         return red_cards.count()
 
     def get_shots_on(self, player) -> int:
+        """Get shots on for a player in a season."""
         shots_on = models.MatchEvent.objects.filter(
             player=player,
             event_type__event_name='Shot On',
@@ -97,6 +103,7 @@ class PlayerStatsSerializer(serializers.Serializer):
         return shots_on.count()
 
     def get_own_goals(self, player) -> int:
+        """Get own goals for a player in a season."""
         own_goals = models.MatchEvent.objects.filter(
             player=player,
             event_type__event_name='Own Goal',

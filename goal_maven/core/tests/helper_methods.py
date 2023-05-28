@@ -197,7 +197,7 @@ class HelperMethods:
                 role_key=role_key,
             )
 
-    def create_player(self, player_name='test player'):
+    def create_player(self, player_name='test player', team=None):
         """Method to create a player."""
         with transaction.atomic():
             if models.Nation.objects.count() > 0:
@@ -219,6 +219,7 @@ class HelperMethods:
                 role=role,
                 total_appearances=100,
                 career_start='1995-01-01',
+                team=team,
             )
 
     def create_season(self, season_name='test season'):
