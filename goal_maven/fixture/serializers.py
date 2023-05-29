@@ -15,7 +15,7 @@ class FixtureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fixture
         fields = ['fixture_id', 'season', 'league', 'date', 'time', 'home_team',
-                  'away_team', 'match_day', 'match_status']
+                  'away_team', 'match_day', 'match_status', 'motm']
         # read_only_fields = ['id']
 
 
@@ -37,7 +37,6 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = ['match_id', 'fixture', 'result', 'winner_team']
-        # read_only_fields = ['id']
 
 
 class MatchDetailSerializer(MatchSerializer):

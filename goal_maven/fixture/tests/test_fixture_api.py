@@ -295,12 +295,14 @@ class PrivateFixtureApiTests(TestCase):
             league=league,
         )
         away_team = self.helper.create_team(team_name='myteam2', manager=away_manager)
+        motm = self.helper.create_player(player_name='testplayer1', team=home_team)
         my_date = '2023-06-01'
         my_time = '20:00'
         match_status = self.helper.create_matchstatus(status_name='Scheduled')
         payload = {
             'season': season.season_id,
             'league': league.league_id,
+            'motm': motm.player_id,
             'match_day': 1,
             'home_team': home_team.team_id,
             'away_team': away_team.team_id,
@@ -322,6 +324,7 @@ class PrivateFixtureApiTests(TestCase):
         self.assertEqual(fixture.away_team.team_id, payload['away_team'])
         self.assertEqual(fixture.season.season_id, payload['season'])
         self.assertEqual(fixture.league.league_id, payload['league'])
+        self.assertEqual(fixture.motm.player_id, payload['motm'])
 
     def test_full_update_match(self):
         """Test full update of match."""
@@ -392,6 +395,7 @@ class PrivateFixtureApiTests(TestCase):
             league=league,
         )
         away_team = self.helper.create_team(team_name='myteam2', manager=away_manager)
+        motm = self.helper.create_player(player_name='testplayer1', team=home_team)
         my_date = '2023-06-01'
         my_time = '20:00'
         match_status = self.helper.create_matchstatus(status_name='Scheduled')
@@ -399,6 +403,7 @@ class PrivateFixtureApiTests(TestCase):
             'season': season.season_id,
             'league': league.league_id,
             'match_day': 1,
+            'motm': motm.player_id,
             'home_team': home_team.team_id,
             'away_team': away_team.team_id,
             'home_team_manager': home_manager.manager_name,
@@ -468,18 +473,21 @@ class PrivateFixtureApiTests(TestCase):
         self.assertEqual(match.away_team_goals, 0)
         self.assertEqual(match.winner_team, None)
 
-    def test_delete_fixture(self):
+    def test_delete_fixture_and_match(self):
         """Test deleting a fixture successful."""
         fixture = self.helper.create_fixture(
             home_team='team1',
             away_team='team2',
         )
 
+        match = self.helper.create_match(fixture=fixture)
+
         url = detail_url_fixture(fixture.fixture_id)
         res = self.staff_client.delete(url)
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Fixture.objects.filter(fixture_id=fixture.fixture_id).exists())
+        self.assertFalse(Match.objects.filter(match_id=match.match_id).exists())
 
     def test_delete_match_returns_error(self):
         """Test deleting a match returns error."""

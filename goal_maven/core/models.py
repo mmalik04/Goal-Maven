@@ -177,6 +177,10 @@ class Season(models.Model):
     season_name = models.CharField(max_length=50, blank=False, unique=True)
     start_date = models.DateField(blank=False)
     end_date = models.DateField(blank=False)
+    top_scorer = models.ForeignKey(
+        'Player', on_delete=models.SET_NULL, null=True, blank=True,
+        default=None,
+    )
     is_concluded = models.BooleanField(default=False)
     number_of_leagues = models.SmallIntegerField(default=0)
     number_of_matches = models.IntegerField(default=0)
@@ -247,6 +251,10 @@ class Fixture(models.Model):
     fixture_id = models.AutoField(primary_key=True)
     season = models.ForeignKey('Season', on_delete=models.CASCADE, blank=False)
     league = models.ForeignKey('League', on_delete=models.CASCADE, blank=False)
+    motm = models.ForeignKey(
+        'Player', on_delete=models.SET_NULL, null=True,
+        blank=True, default=None,
+    )
     match_day = models.SmallIntegerField(default=0)
     home_team = models.ForeignKey(
         'Team', on_delete=models.CASCADE, blank=False, related_name='home_team'
